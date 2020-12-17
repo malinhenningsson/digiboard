@@ -7,19 +7,63 @@
 }
 
 body {
-    background-color: #333;
-    color: #fff;
+    background-color: #fff;
+    color: #333;
 }
 
 #whiteboard-wrapper {
     height: 100vh;
-    background-color: #fff;
-    color: #333;
+    border-right: 1px solid #888;
 }
 
 #toolpicker-wrapper {
     width: 100%;
     height: 5%;
-    background-color: #888;
-    color: #fff;
+    border-bottom: 1px solid #888;
+}
+
+#chat-wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .online-users {
+        border-bottom: 1px solid #888;
+        margin-top: 1em;
+
+        h1 {
+            font-size: 1.5em;
+        }
+    }
+
+    ul {
+        list-style: none;
+
+        .your-msg {
+            background-color: rgb(47, 47, 255);
+            color: white;
+            border-radius: 0.25em;
+            margin: 0.5em 0;
+            padding: 0.25em;
+        }
+    
+        .others-msg {
+            background-color: gray;
+            color: white;
+            border-radius: 0.25em;
+            margin: 0.5em 0;
+            padding: 0.25em;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+    }
+
+    input {
+        width: 100%;
+        margin: 1rem 0;
+        padding: 0.25em;
+    }
 }
