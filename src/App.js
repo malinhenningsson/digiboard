@@ -1,10 +1,14 @@
 import './App.scss';
 import { Container } from 'react-bootstrap';
+import Room from './screens/Room';
+import Lobby from './screens/Lobby';
+
 
 function App() {
   return (
     <Container fluid>
-        <h1>DigiBoard</h1>
+      <Lobby />
+      <Room />
     </Container>
   );
 }
