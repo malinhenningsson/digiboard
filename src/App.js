@@ -1,10 +1,11 @@
-import './App.css';
+import './App.scss';
+import { Container } from 'react-bootstrap';
 
 function App() {
   return (
-    <div className="App">
-      <h1>DigiBoard</h1>
-    </div>
+    <Container fluid>
+        <h1>DigiBoard</h1>
+    </Container>
   );
 }
 
