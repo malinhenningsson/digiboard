@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
 const Chat = (user, onlineUsers) => {
     const [username, setUsername] = useState('Anonymous');
@@ -15,6 +15,9 @@ const Chat = (user, onlineUsers) => {
         setMessageList(list);
         setMessage('');
         inputRef.current.value = "";
+        
+        // Need to fix better solution to scroll into view, not optimal.
+        document.querySelector("#chat-input").scrollIntoView();
     }
 
     return (
@@ -26,7 +29,7 @@ const Chat = (user, onlineUsers) => {
                     <li>User 2</li>
                 </ul>
             </div>
-            <div>
+            <div id="chat-msg-box">
                 <ul>
                     {/* <li className="your-msg"><span className="bold">{username}:</span> Hello!</li>
                     <li className="others-msg"><span className="bold">{username}:</span> Hey!</li>
@@ -39,6 +42,7 @@ const Chat = (user, onlineUsers) => {
                 </ul>
                 <form onSubmit={handleSubmit}>
                     <input 
+                        id="chat-input"
                         type="text" 
                         placeholder="Chat with the other users"
                         ref={inputRef} 

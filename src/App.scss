@@ -61,6 +61,11 @@ body {
         }
     }
 
+    #chat-msg-box {
+        max-height: 75%;
+        overflow-y: auto;
+    }
+
     ul {
         list-style: none;
 
