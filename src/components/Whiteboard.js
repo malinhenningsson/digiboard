@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useRef } from 'react'
+import Canvas from './Canvas'
 import ToolPicker from './ToolPicker'
 
 const Whiteboard = () => {
+    const parentRef = useRef(null);
+
     return (
-        <div id="whiteboard-wrapper">
+        <div id="whiteboard-wrapper" ref={parentRef}>
             <ToolPicker />
-            This is where the whiteboard will go
+            <Canvas parentRef={parentRef} />
         </div>
     )
 }
