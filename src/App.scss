@@ -26,13 +26,12 @@ body {
     justify-content: space-between;
     align-items: center;
 
-    ul {
-        display: flex;
-        list-style: none;
-        margin: 0.5em 0;
-
-        li {
-            margin: 0.5em;
+    #tools .fa-icon {
+        cursor: pointer;
+        font-size: 2em;
+        margin: 0.75em 0.5em;
+        :hover {
+            color: #888;
         }
     }
 

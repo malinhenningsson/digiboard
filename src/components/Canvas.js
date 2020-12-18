@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const Canvas = ({ parentRef }) => {
+const Canvas = ({ parentRef, color }) => {
     const canvasRef = useRef(null);
     const [ctx, setCtx] = useState({});
     const [drawing, setDrawing] = useState(false);
@@ -45,7 +45,7 @@ const Canvas = ({ parentRef }) => {
         let mousey = e.clientY - canvasOffset.y;
 
         if (drawing) {
-            ctx.strokeStyle = "#000000";
+            ctx.strokeStyle = color;
             ctx.beginPath();
             ctx.moveTo(position.x, position.y);
             ctx.lineTo(mousex, mousey);
