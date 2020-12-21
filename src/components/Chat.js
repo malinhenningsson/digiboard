@@ -1,10 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react'
 
-const Chat = (user, onlineUsers) => {
-    const [username, setUsername] = useState('Anonymous');
+const Chat = ({ username }) => {
+    const [ownUsername, setOwnUsername] = useState('Anonymous');
     const [message, setMessage] = useState('');
     const [messageList, setMessageList] = useState([]);
     const inputRef = useRef(null);
+
+    useEffect(() => {
+        setOwnUsername(username);
+    }, [])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -25,8 +29,7 @@ const Chat = (user, onlineUsers) => {
             <div className="online-users">
                 <h1 className="bold">Online:</h1>
                 <ul>
-                    <li>User 1</li>
-                    <li>User 2</li>
+                    <li>{ownUsername} (You)</li>
                 </ul>
             </div>
             <div id="chat-msg-box">
