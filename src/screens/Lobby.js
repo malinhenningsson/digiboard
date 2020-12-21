@@ -2,8 +2,12 @@ import React from 'react'
 
 const Lobby = () => {
     return (
-        <div>
-            This is the lobby
+        <div id="lobby-wrapper">
+            <h1>DigiBoard</h1>
+            <form id="lobby-form">
+                <input type="text" placeholder="Choose a username" />
+                <button>Create room</button>
+            </form>
         </div>
     )
 }
