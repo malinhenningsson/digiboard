@@ -4,26 +4,55 @@ import PubNub from 'pubnub';
 const PubNubContext = createContext();
 
 const usePubnub = () => {
-    return useContext(PubNubContext);
+    const context = useContext(PubNubContext);
+    if (context === undefined) {
+        throw new Error('`usePubNub` hook must be used within a `PubNubContextProvider` component');
+    }
+    return context;
 }
 
 const PubNubContextProvider = (props) => {
-    const [pubnubUser, setPubnubUser] = useState(null);
+    const newUUID = PubNub.generateUUID();
+    const pubnub = new PubNub({
+        publishKey: process.env.REACT_APP_PUBNUB_PUBLISH_KEY,
+        subscribeKey: process.env.REACT_APP_PUBNUB_SUBSCRIBE_KEY,
+        ssl: true,
+        uuid: newUUID,
+    });
 
-    useEffect(() => {
-        let pubnub = new PubNub({
-            publish_key: process.env.REACT_APP_PUBNUB_PUBLISH_KEY,
-            subscribe_key: process.env.REACT_APP_PUBNUB_SUBSCRIBE_KEY,
-            ssl: true
+    const subscribeToChannel = (roomname) => {
+        pubnub.subscribe({
+            channels: [roomname]
         });
 
-        setPubnubUser(pubnub);
-    }, [])
+        pubnub.addListener({
+            status(event) {
+                if (event.category === "PNConnectedCategory") {
+                    console.log('connected', event);
+                }
+            },
+            message(msg) {
+                console.log(msg.message);
+            },
+            presence(response) {
+                console.log(response);
+            }
+        });
+    };
 
-    const contextValues = { pubnubUser };
+    const publishToChannel = (roomname, message) => {
+        const publishConfig = {
+            channel: roomname,
+            message
+        };
+        pubnub.publish(publishConfig, (status, response) => {
+            console.log("status", status);
+            console.log("response", response);
+        })
+    }
 
     return (
-        <PubNubContext.Provider value={contextValues}>
+        <PubNubContext.Provider value={{ usePubnub, pubnub, subscribeToChannel, publishToChannel }}>
             {props.children}
         </PubNubContext.Provider>
     )

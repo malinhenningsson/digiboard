@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { usePubnub } from "../contexts/PubNubContext";
 
 const Lobby = () => {
     const [username, setUsername] = useState(null);
     const [roomname, setRoomname] = useState(null);
     const navigate = useNavigate();
-
-    const handleSubmit = async (e) => {
+    const { subscribeToChannel } = usePubnub();
+    
+    const handleSubmit = (e) => {
         e.preventDefault();
+        subscribeToChannel(roomname);
         navigate(`/channel/${roomname}`, {state: {username}});
     }
 
