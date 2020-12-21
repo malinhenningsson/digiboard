@@ -4,11 +4,12 @@ import { Container } from 'react-bootstrap';
 import Room from './screens/Room';
 import Lobby from './screens/Lobby';
 import NotFound from './screens/NotFound';
-
+import PubNubContextProvider from './contexts/PubNubContext';
 
 function App() {
-  return (
+	return (
 	  <Router>
+	  <PubNubContextProvider>
 		<Container fluid>
 			<Routes>
 				<Route path="/">
@@ -20,6 +21,7 @@ function App() {
 				<Route path="*" element={ <NotFound /> } />
 			</Routes>
 		</Container>
+	  </PubNubContextProvider>
 	  </Router>
   );
 }
