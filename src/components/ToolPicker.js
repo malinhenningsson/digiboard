@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChromePicker } from "react-color";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPalette } from "@fortawesome/free-solid-svg-icons";
+import { faDownload, faTrashAlt, faPalette } from "@fortawesome/free-solid-svg-icons";
 
 const ToolPicker = ({color, setColor}) => {
     const popover = {
@@ -49,9 +49,18 @@ const ToolPicker = ({color, setColor}) => {
                             <ChromePicker color={color} onChange={handleChange} />
                         </div>
                     ) : null}
+                    <FontAwesomeIcon
+                        title="choose color"
+                        className="fa-icon"
+                        icon={faTrashAlt}
+                        />
             </div>
             <div>
-                <button id="download">Download</button>
+                <FontAwesomeIcon
+                    title="download"
+                    className="fa-icon"
+                    icon={faDownload}
+                    />
             </div>
         </div>
     )
