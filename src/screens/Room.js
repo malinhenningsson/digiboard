@@ -8,17 +8,18 @@ import { usePubnub } from '../contexts/PubNubContext';
 const Room = () => {
     const location = useLocation();
     const { channelId } = useParams();
-    const { publishToChannel } = usePubnub();
+    const { subscribeToChannel, publishToChannel } = usePubnub();
 
     useEffect(() => {
-        publishToChannel(channelId, location.state.username + ' is in the room')
+        subscribeToChannel(channelId);
+        publishToChannel(channelId, location.state && location.state.username ? `${location.state.username} is in the room` : "Anonymous is here");
     }, [])
 
     return (
         <>
             <Row>
                 <Col sm={12} md={9} lg={9}>
-                    <Whiteboard username={location.state && location.state.username ? location.state.username : "Anonymous"} />
+                    <Whiteboard username={location.state && location.state.username ? location.state.username : "Anonymous"} channelName={channelId} />
                 </Col>
                 <Col sm={0} md={3} lg={3}>
                     <Chat username={location.state && location.state.username ? location.state.username : "Anonymous"} />
