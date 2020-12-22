@@ -33,11 +33,12 @@ const Canvas = ({ parentRef, color, channelName, clearTheCanvas, setClearTheCanv
     useEffect(() => {
         if (!ctx) return;
         if (recievedData === null || undefined) return;
+        if (recievedData.canvas === null || undefined) return;
 
-        if (recievedData.positions) {
-            drawFromStream(recievedData);
+        if (recievedData.canvas.positions) {
+            drawFromStream(recievedData.canvas);
         }
-        if (recievedData.clearTheCanvas) {
+        if (recievedData.canvas.clearTheCanvas) {
             clearCanvas();
         }
     }, [recievedData]);
@@ -53,7 +54,9 @@ const Canvas = ({ parentRef, color, channelName, clearTheCanvas, setClearTheCanv
         ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
         publishToChannel(channelName, {
-            clearTheCanvas: clearTheCanvas
+            canvas: {
+                clearTheCanvas: clearTheCanvas
+            }
         });
         setClearTheCanvas(false);
     }
@@ -101,8 +104,10 @@ const Canvas = ({ parentRef, color, channelName, clearTheCanvas, setClearTheCanv
         setIsActive(false);
 
         publishToChannel(channelName, {
-            color: color,
-            positions: plots,
+            canvas: {
+                color: color,
+                positions: plots,
+            }
         })
 
         plots = [];
