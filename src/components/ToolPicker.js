@@ -3,7 +3,7 @@ import { ChromePicker } from "react-color";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faTrashAlt, faPalette } from "@fortawesome/free-solid-svg-icons";
 
-const ToolPicker = ({color, setColor}) => {
+const ToolPicker = ({color, setColor, setClearTheCanvas }) => {
     const popover = {
         position: "absolute",
         zIndex: "2",
@@ -53,6 +53,7 @@ const ToolPicker = ({color, setColor}) => {
                         title="choose color"
                         className="fa-icon"
                         icon={faTrashAlt}
+                        onClick={() => setClearTheCanvas(true)}
                         />
             </div>
             <div>

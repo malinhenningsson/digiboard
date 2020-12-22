@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { usePubnub } from '../contexts/PubNubContext';
 
-const Canvas = ({ parentRef, color, channelName }) => {
+const Canvas = ({ parentRef, color, channelName, clearTheCanvas, setClearTheCanvas }) => {
     const canvasRef = useRef(null);
     const [ctx, setCtx] = useState({});
     const [isActive, setIsActive] = useState(false);
@@ -9,7 +9,7 @@ const Canvas = ({ parentRef, color, channelName }) => {
     let plots = [];
 
     // Get pubnub connections
-    const { publishToChannel, recievedData} = usePubnub();
+    const { publishToChannel, recievedData } = usePubnub();
 
     // Set up canvas and context
     useEffect(() => {
@@ -32,8 +32,31 @@ const Canvas = ({ parentRef, color, channelName }) => {
     // Listen to new recieved data
     useEffect(() => {
         if (!ctx) return;
-        drawFromStream(recievedData);
-    }, [recievedData])
+        if (recievedData === null || undefined) return;
+
+        if (recievedData.positions) {
+            drawFromStream(recievedData);
+        }
+        if (recievedData.clearTheCanvas) {
+            clearCanvas();
+        }
+    }, [recievedData]);
+
+    // Listen to press on clear canvas button
+    useEffect(() => {
+        if (!clearTheCanvas) return;
+        clearCanvas();
+    }, [clearTheCanvas])
+
+    // Clear canvas from strokes
+    const clearCanvas = () => {
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+
+        publishToChannel(channelName, {
+            clearTheCanvas: clearTheCanvas
+        });
+        setClearTheCanvas(false);
+    }
 
     // Draw on canvas using other users strokes
     const drawFromStream = (data) => {
@@ -50,7 +73,6 @@ const Canvas = ({ parentRef, color, channelName }) => {
         positions.forEach(position => {
             ctx.lineTo(position.x, position.y)
         })
-
         ctx.stroke();
     }
 
