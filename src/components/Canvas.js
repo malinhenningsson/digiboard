@@ -34,7 +34,7 @@ const Canvas = ({ parentRef, color, channelName, clearTheCanvas, setClearTheCanv
         if (!ctx) return;
         if (canvasData === null || undefined) return;
 
-        if (canvasData.positions.length > 0) {
+        if ((canvasData.positions !== undefined || null) && (canvasData.positions.length > 0)) {
             drawFromStream(canvasData);
         }
         if (canvasData.clearTheCanvas) {
@@ -68,6 +68,7 @@ const Canvas = ({ parentRef, color, channelName, clearTheCanvas, setClearTheCanv
 
     // Draw strokes on canvas from mousemovements
     const drawOnCanvas = (color, positions) => {
+        if (positions[0].x === undefined || null) return;
         ctx.strokeStyle = color;
         ctx.beginPath();
         ctx.moveTo(positions[0].x, positions[0].y);
