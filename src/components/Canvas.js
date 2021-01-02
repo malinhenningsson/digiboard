@@ -9,7 +9,7 @@ const Canvas = ({ parentRef, color, channelName, clearTheCanvas, setClearTheCanv
     let plots = [];
 
     // Get pubnub connections
-    const { publishToChannel, recievedData } = usePubnub();
+    const { publishToChannel, canvasData } = usePubnub();
 
     // Set up canvas and context
     useEffect(() => {
@@ -32,16 +32,15 @@ const Canvas = ({ parentRef, color, channelName, clearTheCanvas, setClearTheCanv
     // Listen to new recieved data
     useEffect(() => {
         if (!ctx) return;
-        if (recievedData === null || undefined) return;
-        if (recievedData.canvas === null || undefined) return;
+        if (canvasData === null || undefined) return;
 
-        if (recievedData.canvas.positions) {
-            drawFromStream(recievedData.canvas);
+        if (canvasData.positions.length > 0) {
+            drawFromStream(canvasData);
         }
-        if (recievedData.canvas.clearTheCanvas) {
+        if (canvasData.clearTheCanvas) {
             clearCanvas();
         }
-    }, [recievedData]);
+    }, [canvasData]);
 
     // Listen to press on clear canvas button
     useEffect(() => {
