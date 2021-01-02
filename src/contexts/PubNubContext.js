@@ -12,7 +12,8 @@ const usePubnub = () => {
 }
 
 const PubNubContextProvider = (props) => {
-    const [recievedData, setRecievedData] = useState(null);
+    const [canvasData, setCanvasData] = useState(null);
+    const [messageData, setMessageData] = useState([]);
 
     const newUUID = PubNub.generateUUID();
     const pubnub = new PubNub({
@@ -21,6 +22,15 @@ const PubNubContextProvider = (props) => {
         ssl: true,
         uuid: newUUID,
     });
+
+    const updateUserInfo = async(username) => {
+        let user = await pubnub.objects.setUUIDMetadata({
+            data: {
+                name: username
+            }
+        })
+        return user;
+    }
 
     const subscribeToChannel = (roomname) => {
         pubnub.subscribe({
@@ -33,19 +43,56 @@ const PubNubContextProvider = (props) => {
                 if (event.category === "PNConnectedCategory") {
                     console.log('connected', event);
                 }
+                if (event.operation === "PNSubscribeOperation") {
+                    console.log('subscribing', event.affectedChannels)
+                }
             },
             message(msg) {
                 if(msg) {
                     if(msg.message) {
-                        setRecievedData(msg.message);
+                        if(msg.message.canvas) {
+                            setCanvasData(msg.message.canvas);
+                        }
+                        if(msg.message.chat) {
+                            let newMessages = [];
+                            newMessages.push({
+                                username: msg.message.chat.username,
+                                text: msg.message.chat.text,
+                                uuid: msg.publisher
+                            });
+                            setMessageData(messageData => messageData.concat(newMessages));
+                            console.log('Message data: ', msg.message.data);
+                        }
                     }
                 }
             },
             presence(response) {
-                console.log(response);
+                if (response.action === "join") {
+                    // console.log(`User ${response.uuid} joined`);
+                    pubnub.hereNow({
+                        channels: [response.channel]
+                    }, function (status, response) {
+                        // console.log(response.channels[roomname].occupants)
+                        // Get occupants? response.channels[channel].occupants
+                        // need state in this to connect a username to uuid
+
+                    })
+                }
+                if (response.action === "leave") {
+                    // console.log(`User ${response.uuid} left`)
+                    // Need to unsubrice to room, doesnt seem to work?
+                    unsubscribeFromChannel(response.channel);
+                }
             }
         });
     };
+
+    const unsubscribeFromChannel = (roomname) => {
+        // pubnub.removeListener();
+        pubnub.unsubscribe({
+            channels: [roomname]
+        })
+    }
 
     const publishToChannel = (roomname, data) => {
         const publishConfig = {
@@ -53,22 +100,40 @@ const PubNubContextProvider = (props) => {
             message: data
         };
         pubnub.publish(publishConfig, (status, response) => {
-            console.log("status", status);
-            console.log("response", response);
         })
+    };
+
+    const getChannelUserData = (roomname) => {
+        pubnub.hereNow(
+            {
+                channels: [roomname], 
+                channelGroups : [roomname],
+                includeUUIDs: true,
+                includeState: true 
+            },
+            function (status, response) {
+                // handle status, response
+                // console.log('status: ', status);
+                // console.log('response: ', response)
+            }
+        );
     }
 
-    // Function for connecting to chat
+    // Function for retrieving history
 
     // Unsubscribing to whiteboard and chat when leaving page
 
     // Object with context values
     let constextValues = {
         usePubnub, 
-        pubnub, 
-        subscribeToChannel, 
+        pubnub,
+        updateUserInfo,
+        subscribeToChannel,
+        unsubscribeFromChannel, 
         publishToChannel,
-        recievedData
+        canvasData,
+        messageData,
+        getChannelUserData
     }
 
     return (

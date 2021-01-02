@@ -6,11 +6,12 @@ const Lobby = () => {
     const [username, setUsername] = useState(null);
     const [roomname, setRoomname] = useState(null);
     const navigate = useNavigate();
-    const { subscribeToChannel } = usePubnub();
+    const { subscribeToChannel, updateUserInfo } = usePubnub();
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        subscribeToChannel(roomname);
+        updateUserInfo(username);
+        subscribeToChannel(roomname, username);
         navigate(`/channel/${roomname}`, {state: {username}});
     }
 

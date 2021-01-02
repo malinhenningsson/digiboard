@@ -1,22 +1,32 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react';
+import { usePubnub } from '../contexts/PubNubContext';
 
-const Chat = ({ username }) => {
+const Chat = ({ username, channelName }) => {
     const [ownUsername, setOwnUsername] = useState('Anonymous');
     const [message, setMessage] = useState('');
     const [messageList, setMessageList] = useState([]);
     const inputRef = useRef(null);
+    const { publishToChannel, messageData, getChannelUserData } = usePubnub();
 
     useEffect(() => {
         setOwnUsername(username);
+        getChannelUserData(channelName);
     }, [])
+
+    useEffect(() => {
+        console.log('message data: ', messageData);
+        setMessageList(messageData);
+    }, [messageData]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        let list = messageList;
-        list.push(message);
-
-        setMessageList(list);
+        publishToChannel(channelName, {
+            chat: {
+                username: username,
+                text: message
+            }
+        })
         setMessage('');
         inputRef.current.value = "";
         
@@ -29,17 +39,14 @@ const Chat = ({ username }) => {
             <div className="online-users">
                 <h1 className="bold">Online:</h1>
                 <ul>
-                    <li>{ownUsername} (You)</li>
+                    <li>{username}</li>
                 </ul>
             </div>
             <div id="chat-msg-box">
                 <ul>
-                    {/* <li className="your-msg"><span className="bold">{username}:</span> Hello!</li>
-                    <li className="others-msg"><span className="bold">{username}:</span> Hey!</li>
-                    <li className="others-msg"><span className="bold">{username}:</span> Whats up?</li> */}
                     {
                         messageList.map((message, index) => (
-                            <li key={index} className="your-msg"><span className="bold">{username}:</span> {message}</li>
+                            <li key={index} className={message.username === ownUsername ? "your-msg" : "others-msg"}><span className="bold">{message.username}:</span> {message.text}</li>
                         ))
                     }
                 </ul>
