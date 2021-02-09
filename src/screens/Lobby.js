@@ -10,7 +10,7 @@ const Lobby = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        updateUserInfo(username);
+        updateUserInfo(username, roomname);
         subscribeToChannel(roomname, username);
         navigate(`/channel/${roomname}`, {state: {username}});
     }

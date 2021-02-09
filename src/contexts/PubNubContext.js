@@ -23,13 +23,25 @@ const PubNubContextProvider = (props) => {
         uuid: newUUID,
     });
 
-    const updateUserInfo = async(username) => {
-        let user = await pubnub.objects.setUUIDMetadata({
-            data: {
-                name: username
-            }
+    const updateUserInfo = (username, roomname) => {
+        // let user = await pubnub.objects.setUUIDMetadata({
+        //     data: {
+        //         name: username
+        //     }
+        // })
+        // return user;
+        console.log('updating userinfo with: ', username, roomname)
+        pubnub.setState({
+            state: {username: username},
+            channels: [roomname]
+        }, function (status, response) {
+            if (status.isError) {
+                console.log(status);
+              }
+              else {
+                console.log(response);
+              }
         })
-        return user;
     }
 
     const subscribeToChannel = (roomname) => {
@@ -72,7 +84,7 @@ const PubNubContextProvider = (props) => {
                     pubnub.hereNow({
                         channels: [response.channel]
                     }, function (status, response) {
-                        // console.log(response.channels[roomname].occupants)
+                        console.log(response.channels[roomname].occupants)
                         // Get occupants? response.channels[channel].occupants
                         // need state in this to connect a username to uuid
 
@@ -88,7 +100,6 @@ const PubNubContextProvider = (props) => {
     };
 
     const unsubscribeFromChannel = (roomname) => {
-        // pubnub.removeListener();
         pubnub.unsubscribe({
             channels: [roomname]
         })
