@@ -14,6 +14,7 @@ const ToolPicker = ({
   setClearTheCanvas,
   showInviteUsers,
   setShowInviteUsers,
+  handleDownloadCanvas,
 }) => {
   const popover = {
     position: "absolute",
@@ -70,6 +71,7 @@ const ToolPicker = ({
           title="download"
           className="fa-icon"
           icon={faDownload}
+          onClick={() => handleDownloadCanvas()}
         />
       </div>
       <div>
