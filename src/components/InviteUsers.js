@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { init, send } from "emailjs-com";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-const InviteUsers = ({ username }) => {
+const InviteUsers = ({ username, showInviteUsers, setShowInviteUsers }) => {
   const [email, setEmail] = useState("");
   const [invitationSent, setInvitationSent] = useState(false);
   const url = window.location.href;
-
-  console.log(url);
 
   // Initialize email functionality
   init(process.env.REACT_APP_EMAILJS_USERID);
@@ -31,24 +31,54 @@ const InviteUsers = ({ username }) => {
       .catch((err) => console.log(err));
   };
 
+  const closeInviteBox = () => {
+    setShowInviteUsers(!showInviteUsers);
+    setEmail("");
+  };
+
+  const resetInviteBox = () => {
+    setInvitationSent(!invitationSent);
+    setEmail("");
+  };
+
   return (
     <div id="invite-users-wrapper">
       <div id="invite-users-content">
-        <h1>Intive others to join you digiboard</h1>
+        <div className="fa-icon-box">
+          <FontAwesomeIcon
+            title="close invitation box"
+            className="fa-icon"
+            icon={faTimes}
+            onClick={() => closeInviteBox()}
+          />
+        </div>
         {invitationSent ? (
           <>
-            <p>Invitation has been sent to {email}.</p>
+            <div className="email-sent">
+              <p>
+                Invitation has been sent to <span>{email}</span>.
+              </p>
+              <p>
+                Send another invitation?{" "}
+                <span className="add-user" onClick={() => resetInviteBox()}>
+                  Add user
+                </span>
+              </p>
+            </div>
           </>
         ) : (
-          <form onSubmit={(e) => handleSubmit(e)}>
-            <input
-              type="email"
-              placeholder="Enter an email to invite user"
-              value={email}
-              onChange={(e) => handleChange(e)}
-            />
-            <button>Send invite</button>
-          </form>
+          <>
+            <h1>Intive others to join you digiboard</h1>
+            <form onSubmit={(e) => handleSubmit(e)}>
+              <input
+                type="email"
+                placeholder="Enter an email to invite user"
+                value={email}
+                onChange={(e) => handleChange(e)}
+              />
+              <button>Send invite</button>
+            </form>
+          </>
         )}
       </div>
     </div>

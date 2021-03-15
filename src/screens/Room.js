@@ -44,6 +44,8 @@ const Room = () => {
               ? location.state.username
               : "Anonymous"
           }
+          showInviteUsers={showInviteUsers}
+          setShowInviteUsers={setShowInviteUsers}
         />
       )}
     </>
