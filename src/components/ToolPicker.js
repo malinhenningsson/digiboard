@@ -19,6 +19,7 @@ const ToolPicker = ({
   const popover = {
     position: "absolute",
     zIndex: "2",
+    marginLeft: "8px",
   };
   const cover = {
     position: "fixed",
