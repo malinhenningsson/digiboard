@@ -1,133 +1,147 @@
 @import "~bootstrap/scss/bootstrap";
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    background-color: #fff;
-    color: #333;
+  background-color: #fff;
+  color: #333;
 }
 
 .container-fluid {
-   padding: 0;
+  padding: 0;
 }
 
 #lobby-wrapper {
-    background-color: #333;
-    color: white;
-    width: 100vw;
-    height: 100vh;
+  background-color: #333;
+  color: white;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  #lobby-form {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 25vw;
 
-    #lobby-form {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 25vw;
-
-        input {
-            margin: 0.5em 0;
-            padding: 0.25em 0.5em;
-            width: 100%;
-            border: none;
-            border-radius: 0.5em;
-            font-size: 1.25em;
-        }
-
-        button {
-            background-color: #fff;
-            color: #333;
-            border: none;
-            border-radius: 0.5em;
-            padding: 0.25em 0.5em;
-            margin: 1em 0;
-        }
+    input {
+      margin: 0.5em 0;
+      padding: 0.25em 0.5em;
+      width: 100%;
+      border: none;
+      border-radius: 0.5em;
+      font-size: 1.25em;
     }
+
+    button {
+      background-color: #fff;
+      color: #333;
+      border: none;
+      border-radius: 0.5em;
+      padding: 0.25em 0.5em;
+      margin: 1em 0;
+    }
+  }
 }
 
 #whiteboard-wrapper {
-    height: 100vh;
-    width: 100%;
-    border-right: 1px solid #888;
-    cursor: crosshair;
-    margin: 0 auto;
-    overflow: hidden;
+  height: 100vh;
+  width: 100%;
+  cursor: crosshair;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
 #toolpicker-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-    .fa-icon {
-        cursor: pointer;
-        font-size: 2em;
-        margin: 0.75em 0.5em;
-        :hover {
-            color: #888;
-        }
+  .fa-icon {
+    cursor: pointer;
+    font-size: 2em;
+    margin: 0.75em 0.5em;
+    :hover {
+      color: #888;
     }
+  }
 }
 
 #chat-wrapper {
-    height: 100vh;
+  .fa-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
+    font-size: 2em;
+    margin: 0.75em 0.5em;
+    :hover {
+      color: #888;
+    }
+  }
+
+  #chat-msg-box {
+    position: absolute;
+    bottom: 4rem;
+    right: 0.5em;
+    max-height: 400px;
+    min-height: 375px;
+    width: 300px;
+    overflow-y: auto;
+    margin: 0.5em;
+    border: 1px solid #cecece;
+    border-radius: 0.5em;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.2);
+    -webkit-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.2);
+    -moz-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.2);
+  }
+
+  #chat-msg-box-content {
+    max-height: 100%;
+    min-height: 375px;
+    padding: 0.5rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-
-    .online-users {
-        margin-top: 1em;
-        padding: 1em;
-        text-align: center;
-        background-color: #888;
-        color: white;
-        border-radius: 0.5em;
-
-        h1 {
-            font-size: 1.5em;
-        }
-    }
-
-    #chat-msg-box {
-        max-height: 75%;
-        overflow-y: auto;
-    }
+    justify-content: flex-end;
 
     ul {
-        list-style: none;
+      list-style: none;
 
-        .your-msg {
-            background-color: rgb(47, 47, 255);
-            color: white;
-            border-radius: 0.25em;
-            margin: 0.5em 0;
-            padding: 0.25em;
-        }
-    
-        .others-msg {
-            background-color: gray;
-            color: white;
-            border-radius: 0.25em;
-            margin: 0.5em 0;
-            padding: 0.25em;
-        }
+      .your-msg {
+        background-color: rgb(47, 47, 255);
+        color: white;
+        border-radius: 0.25em;
+        margin: 0.5em 0;
+        padding: 0.25em;
+      }
 
-        .bold {
-            font-weight: bold;
-        }
+      .others-msg {
+        background-color: gray;
+        color: white;
+        border-radius: 0.25em;
+        margin: 0.5em 0;
+        padding: 0.25em;
+      }
+
+      .bold {
+        font-weight: bold;
+      }
     }
 
     input {
-        width: 100%;
-        margin: 1rem 0;
-        padding: 0.25em;
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.25em;
     }
+  }
 }

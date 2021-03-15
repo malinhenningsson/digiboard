@@ -1,67 +1,36 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { usePubnub } from '../contexts/PubNubContext';
+import React, { useEffect, useState } from "react";
+import { usePubnub } from "../contexts/PubNubContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComments } from "@fortawesome/free-solid-svg-icons";
+import ChatPopUp from "./ChatPopUp";
 
 const Chat = ({ username, channelName }) => {
-    const [ownUsername, setOwnUsername] = useState('Anonymous');
-    const [message, setMessage] = useState('');
-    const [messageList, setMessageList] = useState([]);
-    const inputRef = useRef(null);
-    const { publishToChannel, messageData, getChannelUserData } = usePubnub();
+  const [ownUsername, setOwnUsername] = useState("Anonymous");
+  const [openChat, setOpenChat] = useState(false);
+  const { getChannelUserData } = usePubnub();
 
-    useEffect(() => {
-        setOwnUsername(username);
-        getChannelUserData(channelName);
-    }, [])
+  useEffect(() => {
+    setOwnUsername(username);
+    getChannelUserData(channelName);
+  }, []);
 
-    useEffect(() => {
-        console.log('message data: ', messageData);
-        setMessageList(messageData);
-    }, [messageData]);
+  return (
+    <div id="chat-wrapper">
+      {openChat && (
+        <ChatPopUp
+          channelName={channelName}
+          ownUsername={ownUsername}
+          username={username}
+        />
+      )}
+      <FontAwesomeIcon
+        title="open or close chat"
+        className="fa-icon"
+        icon={faComments}
+        onClick={() => setOpenChat(!openChat)}
+      />
+    </div>
+  );
+};
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        publishToChannel(channelName, {
-            chat: {
-                username: username,
-                text: message
-            }
-        })
-        setMessage('');
-        inputRef.current.value = "";
-        
-        // Need to fix better solution to scroll into view, not optimal.
-        document.querySelector("#chat-input").scrollIntoView();
-    }
-
-    return (
-        <div id="chat-wrapper">
-            <div className="online-users">
-                <h1 className="bold">Online:</h1>
-                <ul>
-                    <li>{username}</li>
-                </ul>
-            </div>
-            <div id="chat-msg-box">
-                <ul>
-                    {
-                        messageList.map((message, index) => (
-                            <li key={index} className={message.username === ownUsername ? "your-msg" : "others-msg"}><span className="bold">{message.username}:</span> {message.text}</li>
-                        ))
-                    }
-                </ul>
-                <form onSubmit={handleSubmit}>
-                    <input 
-                        id="chat-input"
-                        type="text" 
-                        placeholder="Chat with the other users"
-                        ref={inputRef} 
-                        onChange={(e) => setMessage(e.target.value)} 
-                        />
-                </form>
-            </div>
-        </div>
-    )
-}
-
-export default Chat
+export default Chat;
