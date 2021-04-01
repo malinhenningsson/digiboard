@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import { init, send } from "emailjs-com";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -6,7 +7,8 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 const InviteUsers = ({ username, showInviteUsers, setShowInviteUsers }) => {
   const [email, setEmail] = useState("");
   const [invitationSent, setInvitationSent] = useState(false);
-  const url = window.location.href;
+  const { channelId } = useParams();
+  const url = `${window.location.origin}/invite/${channelId}`;
 
   // Initialize email functionality
   init(process.env.REACT_APP_EMAILJS_USERID);

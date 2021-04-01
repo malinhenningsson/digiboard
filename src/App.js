@@ -15,6 +15,9 @@ function App() {
 				<Route path="/">
 					<Lobby />
 				</Route>
+				<Route path="/invite/:channelId">
+					<Lobby />
+				</Route>
 				<Route path="/channel/:channelId">
 					<Room />
 				</Route>
