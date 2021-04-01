@@ -1,26 +1,55 @@
-import React, { useEffect, useState} from 'react';
-import { useLocation, useParams } from 'react-router-dom';
-import { Col, Row } from 'react-bootstrap';
-import Whiteboard from '../components/Whiteboard';
-import Chat from '../components/Chat';
-import { usePubnub } from '../contexts/PubNubContext';
+import React, { useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
+import Whiteboard from "../components/Whiteboard";
+import Chat from "../components/Chat";
+import InviteUsers from "../components/InviteUsers";
 
 const Room = () => {
-    const location = useLocation();
-    const { channelId } = useParams();
+  const [showInviteUsers, setShowInviteUsers] = useState(false);
+  const location = useLocation();
+  const { channelId } = useParams();
 
-    return (
-        <>
-            <Row>
-                <Col sm={12} md={9} lg={9}>
-                    <Whiteboard username={location.state && location.state.username ? location.state.username : "Anonymous"} channelName={channelId} />
-                </Col>
-                <Col sm={0} md={3} lg={3}>
-                    <Chat username={location.state && location.state.username ? location.state.username : "Anonymous"} channelName={channelId} />
-                </Col>
-            </Row>
-        </>
-    )
-}
+  useEffect(() => {
+    setShowInviteUsers(true);
+  }, []);
 
-export default Room
+  return (
+    <>
+      <div>
+        <Whiteboard
+          username={
+            location.state && location.state.username
+              ? location.state.username
+              : "Anonymous"
+          }
+          channelName={channelId}
+          showInviteUsers={showInviteUsers}
+          setShowInviteUsers={setShowInviteUsers}
+        />
+      </div>
+      <div>
+        <Chat
+          username={
+            location.state && location.state.username
+              ? location.state.username
+              : "Anonymous"
+          }
+          channelName={channelId}
+        />
+      </div>
+      {showInviteUsers && (
+        <InviteUsers
+          username={
+            location.state && location.state.username
+              ? location.state.username
+              : "Anonymous"
+          }
+          showInviteUsers={showInviteUsers}
+          setShowInviteUsers={setShowInviteUsers}
+        />
+      )}
+    </>
+  );
+};
+
+export default Room;

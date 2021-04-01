@@ -2,6 +2,8 @@
 
 .env
 .notes-drawing.js
+.eslintcache
+package-lock.json
 
 # dependencies
 /node_modules
