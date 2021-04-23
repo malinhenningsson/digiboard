@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import PubNub from 'pubnub';
 
 const PubNubContext = createContext();
@@ -24,13 +24,6 @@ const PubNubContextProvider = (props) => {
     });
 
     const updateUserInfo = (username, roomname) => {
-        // let user = await pubnub.objects.setUUIDMetadata({
-        //     data: {
-        //         name: username
-        //     }
-        // })
-        // return user;
-        console.log('updating userinfo with: ', username, roomname)
         pubnub.setState({
             state: {username: username},
             channels: [roomname]
@@ -73,7 +66,6 @@ const PubNubContextProvider = (props) => {
                                 uuid: msg.publisher
                             });
                             setMessageData(messageData => messageData.concat(newMessages));
-                            console.log('Message data: ', msg.message.data);
                         }
                     }
                 }
@@ -91,15 +83,20 @@ const PubNubContextProvider = (props) => {
                     })
                 }
                 if (response.action === "leave") {
-                    // console.log(`User ${response.uuid} left`)
+                    console.log(`User ${response.uuid} left`)
                     // Need to unsubrice to room, doesnt seem to work?
                     unsubscribeFromChannel(response.channel);
                 }
-            }
+
+                if (response.action === "state-change") {
+                    console.log('state change', response)
+                }
+            },
         });
     };
 
     const unsubscribeFromChannel = (roomname) => {
+        console.log('unsubscribing')
         pubnub.unsubscribe({
             channels: [roomname]
         })
@@ -129,8 +126,6 @@ const PubNubContextProvider = (props) => {
             }
         );
     }
-
-    // Function for retrieving history
 
     // Unsubscribing to whiteboard and chat when leaving page
 

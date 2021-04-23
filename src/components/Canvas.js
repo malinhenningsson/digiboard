@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePubnub } from "../contexts/PubNubContext";
 
 const Canvas = ({

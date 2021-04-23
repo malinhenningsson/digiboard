@@ -40,7 +40,10 @@ const ChatPopUp = ({ channelName, ownUsername, username }) => {
                 message.username === ownUsername ? "your-msg" : "others-msg"
               }
             >
-              <span className="bold">{message.username}:</span> {message.text}
+              <span className="bold">
+                {message.username === ownUsername ? "You" : message.username}:
+                </span>
+                {message.text}
             </li>
           ))}
         </ul>
