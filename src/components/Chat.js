@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { usePubnub } from "../contexts/PubNubContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComments } from "@fortawesome/free-solid-svg-icons";
 import ChatPopUp from "./ChatPopUp";
@@ -7,11 +6,9 @@ import ChatPopUp from "./ChatPopUp";
 const Chat = ({ username, channelName }) => {
   const [ownUsername, setOwnUsername] = useState("Anonymous");
   const [openChat, setOpenChat] = useState(false);
-  const { getChannelUserData } = usePubnub();
 
   useEffect(() => {
     setOwnUsername(username);
-    getChannelUserData(channelName);
   }, []);
 
   return (

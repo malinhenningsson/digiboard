@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChromePicker } from "react-color";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,6 +7,7 @@ import {
   faPalette,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
+import { usePubnub } from "../contexts/PubNubContext";
 
 const ToolPicker = ({
   color,
@@ -29,6 +30,7 @@ const ToolPicker = ({
     left: "0px",
   };
   const [displayed, setDisplayed] = useState(false);
+  const { occupants } = usePubnub();
 
   const handleClick = () => {
     setDisplayed(true);
@@ -75,13 +77,14 @@ const ToolPicker = ({
           onClick={() => handleDownloadCanvas()}
         />
       </div>
-      <div>
+      <div id="channel-users">
         <FontAwesomeIcon
           title="invite users"
           className="fa-icon"
           icon={faUserPlus}
           onClick={() => setShowInviteUsers(!showInviteUsers)}
         />
+        <p>Occupancy: {occupants ? occupants.occupancy : "0"}</p>
       </div>
     </div>
   );

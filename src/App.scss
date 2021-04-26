@@ -99,15 +99,32 @@ body {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 
   .fa-icon {
     cursor: pointer;
     font-size: 2em;
-    margin: 0.75em 0.5em;
+    margin: 20px 16px;
     :hover {
       color: #888;
     }
+  }
+}
+
+#channel-users {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin: 20px 16px;
+
+  p {
+    margin: 0;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .fa-icon {
+    margin: 0 0 0.25em 0;
   }
 }
 
@@ -118,7 +135,7 @@ body {
     right: 0;
     cursor: pointer;
     font-size: 2em;
-    margin: 0.75em 0.5em;
+    margin: 20px 16px;
     :hover {
       color: #888;
     }
@@ -261,4 +278,11 @@ body {
       }
     }
   }
+}
+
+#pop-up-msg {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import PubNub from 'pubnub';
 
 const PubNubContext = createContext();
@@ -12,8 +12,10 @@ const usePubnub = () => {
 }
 
 const PubNubContextProvider = (props) => {
+    const [occupants, setOccupants] = useState(null);
     const [canvasData, setCanvasData] = useState(null);
     const [messageData, setMessageData] = useState([]);
+    const [infoMessage, setInfoMessage] = useState("");
 
     const newUUID = PubNub.generateUUID();
     const pubnub = new PubNub({
@@ -23,9 +25,16 @@ const PubNubContextProvider = (props) => {
         uuid: newUUID,
     });
 
+    const resetState = () => {
+        setOccupants(null);
+        setCanvasData(null);
+        setMessageData([]);
+        setInfoMessage("");
+    };
+
     const updateUserInfo = (username, roomname) => {
         pubnub.setState({
-            state: {username: username},
+            state: {[pubnub.getUUID()]: username},
             channels: [roomname]
         }, function (status, response) {
             if (status.isError) {
@@ -35,7 +44,7 @@ const PubNubContextProvider = (props) => {
                 console.log(response);
               }
         })
-    }
+    };
 
     const subscribeToChannel = (roomname) => {
         pubnub.subscribe({
@@ -45,11 +54,25 @@ const PubNubContextProvider = (props) => {
 
         pubnub.addListener({
             status(event) {
+                console.log('event', event)
                 if (event.category === "PNConnectedCategory") {
                     console.log('connected', event);
                 }
+                if (event.category === "PNReconnectedCategory") {
+                    console.log('reconnected', event);
+                }
+                if (event.category === "PNNetworkDownCategory") {
+                    console.log('network down', event);
+                }
+                if (event.category === "PNNetworkUpCategory") {
+                    console.log('network up', event);
+                }
                 if (event.operation === "PNSubscribeOperation") {
                     console.log('subscribing', event.affectedChannels)
+                }
+                if (event.operation === "PNUnsubscribeOperation") {
+                    console.log('unsubscribing', event);
+                    resetState();
                 }
             },
             message(msg) {
@@ -71,23 +94,35 @@ const PubNubContextProvider = (props) => {
                 }
             },
             presence(response) {
+                setInfoMessage("");
                 if (response.action === "join") {
-                    // console.log(`User ${response.uuid} joined`);
+                    // Only show "user joined" message to other users
+                    if (pubnub.getUUID() !== response.uuid) {
+                        setInfoMessage(`User ${response.uuid} joined`);
+                    };
+
                     pubnub.hereNow({
                         channels: [response.channel]
                     }, function (status, response) {
-                        console.log(response.channels[roomname].occupants)
-                        // Get occupants? response.channels[channel].occupants
-                        // need state in this to connect a username to uuid
-
-                    })
+                        if (response.channels[roomname]) {
+                            setOccupants(response.channels[roomname]);
+                        }
+                    });
                 }
                 if (response.action === "leave") {
-                    console.log(`User ${response.uuid} left`)
-                    // Need to unsubrice to room, doesnt seem to work?
-                    unsubscribeFromChannel(response.channel);
+                    // Only show "user left" message to other users
+                    if (pubnub.getUUID() !== response.uuid) {
+                        setInfoMessage(`User ${response.uuid} left`);
+                    };
+                    
+                    pubnub.hereNow({
+                        channels: [response.channel]
+                    }, function (status, response) {
+                        if (response.channels[roomname]) {
+                            setOccupants(response.channels[roomname]);
+                        }
+                    });
                 }
-
                 if (response.action === "state-change") {
                     console.log('state change', response)
                 }
@@ -99,35 +134,29 @@ const PubNubContextProvider = (props) => {
         console.log('unsubscribing')
         pubnub.unsubscribe({
             channels: [roomname]
-        })
-    }
+        });
+        resetState();
+    };
 
     const publishToChannel = (roomname, data) => {
         const publishConfig = {
             channel: roomname,
-            message: data
+            message: data,
         };
         pubnub.publish(publishConfig, (status, response) => {
+            setInfoMessage("");
+            if (status.error) {
+                setInfoMessage("Sorry, could not send your message to the other users.")
+            };
         })
     };
 
-    const getChannelUserData = (roomname) => {
-        pubnub.hereNow(
-            {
-                channels: [roomname], 
-                channelGroups : [roomname],
-                includeUUIDs: true,
-                includeState: true 
-            },
-            function (status, response) {
-                // handle status, response
-                // console.log('status: ', status);
-                // console.log('response: ', response)
+    // Unsubscribe user to all channels when closing browser
+    useEffect(() => {
+        return () => {
+                pubnub.unsubscribeAll();
             }
-        );
-    }
-
-    // Unsubscribing to whiteboard and chat when leaving page
+    }, []);
 
     // Object with context values
     let constextValues = {
@@ -139,7 +168,8 @@ const PubNubContextProvider = (props) => {
         publishToChannel,
         canvasData,
         messageData,
-        getChannelUserData
+        occupants,
+        infoMessage,
     }
 
     return (
