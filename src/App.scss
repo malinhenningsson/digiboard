@@ -286,3 +286,16 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+
+.fa-icon-leave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  cursor: pointer;
+  font-size: 2em;
+  margin: 20px 16px;
+  :hover {
+    color: #888;
+  }
+}
