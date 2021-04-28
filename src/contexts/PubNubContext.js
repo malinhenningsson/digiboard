@@ -114,7 +114,9 @@ const PubNubContextProvider = (props) => {
                     };
 
                     pubnub.hereNow({
-                        channels: [response.channel]
+                        channels: [response.channel],
+                        includeUUIDs: true,
+  						includeState: true,
                     }, function (status, response) {
                         if (response.channels[roomname]) {
                             setOccupants(response.channels[roomname]);
