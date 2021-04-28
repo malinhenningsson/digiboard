@@ -23,6 +23,7 @@ const PubNubContextProvider = (props) => {
         subscribeKey: process.env.REACT_APP_PUBNUB_SUBSCRIBE_KEY,
         ssl: true,
         uuid: newUUID,
+        restore: true,
     });
 
     const resetState = () => {
@@ -100,6 +101,8 @@ const PubNubContextProvider = (props) => {
                             setOccupants(response.channels[roomname]);
                         }
                     });
+
+                    getHistory();
                 }
                 if (response.action === "leave") {
                     // Only show "user left" message to other users
@@ -140,6 +143,19 @@ const PubNubContextProvider = (props) => {
                 setInfoMessage("Sorry, could not send your message to the other users.")
             };
         })
+    };
+
+    const getHistory = (roomname) => {
+        pubnub.history(
+            {
+                channel: roomname,
+                count: 50,
+                stringifiedTimeToken: true,
+            },
+            function (status, response) {
+                console.log("history", response);
+            }
+        );
     };
 
     // Unsubscribe user to all channels when closing browser
