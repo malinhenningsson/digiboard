@@ -10,6 +10,12 @@ const ChatPopUp = ({ channelName, ownUsername, username }) => {
   useEffect(() => {
     console.log("message data: ", messageData);
     setMessageList(messageData);
+
+    // Scroll last received message into view
+    document.querySelector("#chat-msg-ul").addEventListener("DOMNodeInserted", event => {
+      const { currentTarget: target } = event;
+      target.scroll({ top: target.scrollHeight, behavior: 'smooth' });
+    });
   }, [messageData]);
 
   const handleSubmit = (e) => {
@@ -24,15 +30,12 @@ const ChatPopUp = ({ channelName, ownUsername, username }) => {
     });
     setMessage("");
     inputRef.current.value = "";
-
-    // Need to fix better solution to scroll into view, not optimal.
-    document.querySelector("#chat-input").scrollIntoView();
   };
 
   return (
     <div id="chat-msg-box">
       <div id="chat-msg-box-content">
-        <ul>
+        <ul id="chat-msg-ul">
           {messageList.map((message, index) => (
             <li
               key={index}
@@ -41,21 +44,23 @@ const ChatPopUp = ({ channelName, ownUsername, username }) => {
               }
             >
               <span className="bold">
-                {message.username === ownUsername ? "You" : message.username}:
+                {message.username === ownUsername ? "You" : message.username}:{" "}
                 </span>
-                {message.text}
+                 {message.text}
             </li>
           ))}
         </ul>
-        <form onSubmit={handleSubmit}>
-          <input
-            id="chat-input"
-            type="text"
-            placeholder="Chat with the other users"
-            ref={inputRef}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-        </form>
+        <div id="chat-input-wrapper">
+          <form onSubmit={handleSubmit}>
+            <input
+              id="chat-input"
+              type="text"
+              placeholder="Chat with the other users"
+              ref={inputRef}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+          </form>
+        </div>
       </div>
     </div>
   );
