@@ -8,11 +8,11 @@ const Lobby = () => {
   const [isInvite, setIsInvite] = useState(false);
   const navigate = useNavigate();
   const { channelId } = useParams();
-  const { subscribeToChannel, updateUserInfo } = usePubnub();
+  const { subscribeToChannel } = usePubnub();
 
 
   useEffect(() => {
-    if (window.location.pathname == `/invite/${channelId}`) {
+    if (window.location.pathname === `/invite/${channelId}`) {
       setIsInvite(true);
     }
   }, [channelId])
@@ -26,12 +26,10 @@ const Lobby = () => {
 
     if (!isInvite) {
       const roomname = getRandomRoomName();
-      subscribeToChannel(roomname);
-      updateUserInfo(username, roomname);
+      subscribeToChannel(roomname, username);
       navigate(`/channel/${roomname}`, { state: { username } });
     } else {
-      subscribeToChannel(channelId);
-      updateUserInfo(username, channelId);
+      subscribeToChannel(channelId, username);
       navigate(`/channel/${channelId}`, { state: { username } });
     }
   };

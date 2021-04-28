@@ -17,7 +17,7 @@ const PubNubContextProvider = (props) => {
     const [messageData, setMessageData] = useState([]);
     const [infoMessage, setInfoMessage] = useState("");
 
-    const newUUID = PubNub.generateUUID();
+    const newUUID = `user-${Date.now()}`;
     const pubnub = new PubNub({
         publishKey: process.env.REACT_APP_PUBNUB_PUBLISH_KEY,
         subscribeKey: process.env.REACT_APP_PUBNUB_SUBSCRIBE_KEY,
@@ -32,21 +32,12 @@ const PubNubContextProvider = (props) => {
         setInfoMessage("");
     };
 
-    const updateUserInfo = (username, roomname) => {
-        pubnub.setState({
-            state: {[pubnub.getUUID()]: username},
-            channels: [roomname]
-        }, function (status, response) {
-            if (status.isError) {
-                console.log(status);
-              }
-              else {
-                console.log(response);
-              }
-        })
+    const getUserState = async (id, roomname) => {
+        const res = await pubnub.getState({ uuid: id, channels: [roomname]});
+        return res.channels[roomname].name;
     };
 
-    const subscribeToChannel = (roomname) => {
+    const subscribeToChannel = (roomname, username) => {
         pubnub.subscribe({
             channels: [roomname],
             withPresence: true,
@@ -57,15 +48,15 @@ const PubNubContextProvider = (props) => {
                 console.log('event', event)
                 if (event.category === "PNConnectedCategory") {
                     console.log('connected', event);
+                    pubnub.setState({
+                        channels: [roomname],
+                        state: {'name': username ? username : "Anonymous"},
+                        callback : function(m){console.log(m)},
+                        error : function(m){console.log(m)}
+                    });
                 }
                 if (event.category === "PNReconnectedCategory") {
                     console.log('reconnected', event);
-                }
-                if (event.category === "PNNetworkDownCategory") {
-                    console.log('network down', event);
-                }
-                if (event.category === "PNNetworkUpCategory") {
-                    console.log('network up', event);
                 }
                 if (event.operation === "PNSubscribeOperation") {
                     console.log('subscribing', event.affectedChannels)
@@ -86,23 +77,24 @@ const PubNubContextProvider = (props) => {
                             newMessages.push({
                                 username: msg.message.chat.username,
                                 text: msg.message.chat.text,
-                                uuid: msg.publisher
                             });
                             setMessageData(messageData => messageData.concat(newMessages));
                         }
                     }
                 }
             },
-            presence(response) {
+            async presence(response) {
                 setInfoMessage("");
                 if (response.action === "join") {
                     // Only show "user joined" message to other users
                     if (pubnub.getUUID() !== response.uuid) {
-                        setInfoMessage(`User ${response.uuid} joined`);
+                        setInfoMessage(`${await getUserState(response.uuid, roomname)} joined the room`);
                     };
 
                     pubnub.hereNow({
-                        channels: [response.channel]
+                        channels: [response.channel],
+						includeUUIDs: true,
+  						includeState: true,
                     }, function (status, response) {
                         if (response.channels[roomname]) {
                             setOccupants(response.channels[roomname]);
@@ -112,9 +104,9 @@ const PubNubContextProvider = (props) => {
                 if (response.action === "leave") {
                     // Only show "user left" message to other users
                     if (pubnub.getUUID() !== response.uuid) {
-                        setInfoMessage(`User ${response.uuid} left`);
+                        setInfoMessage(`${await getUserState(response.uuid, roomname)} left the room`);
                     };
-                    
+
                     pubnub.hereNow({
                         channels: [response.channel]
                     }, function (status, response) {
@@ -131,7 +123,6 @@ const PubNubContextProvider = (props) => {
     };
 
     const unsubscribeFromChannel = (roomname) => {
-        console.log('unsubscribing')
         pubnub.unsubscribe({
             channels: [roomname]
         });
@@ -153,16 +144,17 @@ const PubNubContextProvider = (props) => {
 
     // Unsubscribe user to all channels when closing browser
     useEffect(() => {
+        console.log('Mounting app, setting up pubnub')
         return () => {
+                console.log('Unmounting app, shutting down pubnub')
                 pubnub.unsubscribeAll();
             }
     }, []);
 
     // Object with context values
     let constextValues = {
-        usePubnub, 
         pubnub,
-        updateUserInfo,
+        usePubnub,
         subscribeToChannel,
         unsubscribeFromChannel, 
         publishToChannel,
