@@ -77,6 +77,7 @@ const Canvas = ({
 
   // Draw strokes on canvas from mousemovements
   const drawOnCanvas = (color, positions) => {
+    if (!ctx) return;
     if (positions[0].x === undefined || null) return;
     ctx.strokeStyle = color;
     ctx.beginPath();
