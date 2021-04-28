@@ -4,19 +4,13 @@ import { faComments } from "@fortawesome/free-solid-svg-icons";
 import ChatPopUp from "./ChatPopUp";
 
 const Chat = ({ username, channelName }) => {
-  const [ownUsername, setOwnUsername] = useState("Anonymous");
   const [openChat, setOpenChat] = useState(false);
-
-  useEffect(() => {
-    setOwnUsername(username);
-  }, [username]);
 
   return (
     <div id="chat-wrapper">
       {openChat && (
         <ChatPopUp
           channelName={channelName}
-          ownUsername={ownUsername}
           username={username}
         />
       )}

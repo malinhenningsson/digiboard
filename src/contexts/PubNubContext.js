@@ -10,20 +10,19 @@ const usePubnub = () => {
     }
     return context;
 }
+const newUUID = `user-${Date.now()}`;
+const pubnub = new PubNub({
+    publishKey: process.env.REACT_APP_PUBNUB_PUBLISH_KEY,
+    subscribeKey: process.env.REACT_APP_PUBNUB_SUBSCRIBE_KEY,
+    ssl: true,
+    uuid: newUUID,
+});
 
 const PubNubContextProvider = (props) => {
     const [occupants, setOccupants] = useState(null);
     const [canvasData, setCanvasData] = useState(null);
     const [messageData, setMessageData] = useState([]);
     const [infoMessage, setInfoMessage] = useState("");
-
-    const newUUID = `user-${Date.now()}`;
-    const pubnub = new PubNub({
-        publishKey: process.env.REACT_APP_PUBNUB_PUBLISH_KEY,
-        subscribeKey: process.env.REACT_APP_PUBNUB_SUBSCRIBE_KEY,
-        ssl: true,
-        uuid: newUUID,
-    });
 
     const resetState = () => {
         setOccupants(null);
@@ -83,6 +82,7 @@ const PubNubContextProvider = (props) => {
                             newMessages.push({
                                 username: msg.message.chat.username,
                                 text: msg.message.chat.text,
+                                publisher: msg.publisher,
                             });
                             setMessageData(messageData => messageData.concat(newMessages));
                         }

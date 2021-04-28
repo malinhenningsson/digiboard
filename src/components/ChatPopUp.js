@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { usePubnub } from "../contexts/PubNubContext";
 
-const ChatPopUp = ({ channelName, ownUsername, username }) => {
+const ChatPopUp = ({ channelName, username }) => {
   const [message, setMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
   const inputRef = useRef(null);
-  const { publishToChannel, messageData } = usePubnub();
+  const { publishToChannel, messageData, pubnub } = usePubnub();
 
   useEffect(() => {
     console.log("message data: ", messageData);
@@ -40,11 +40,11 @@ const ChatPopUp = ({ channelName, ownUsername, username }) => {
             <li
               key={index}
               className={
-                message.username === ownUsername ? "your-msg" : "others-msg"
+                message.publisher === pubnub.getUUID() ? "your-msg" : "others-msg"
               }
             >
               <span className="bold">
-                {message.username === ownUsername ? "You" : message.username}:{" "}
+                {message.publisher === pubnub.getUUID() ? "You" : message.username}:{" "}
                 </span>
                  {message.text}
             </li>
