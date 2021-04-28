@@ -99,8 +99,8 @@ const PubNubContextProvider = (props) => {
 
                     pubnub.hereNow({
                         channels: [response.channel],
-						includeUUIDs: true,
-  						includeState: true,
+                        includeUUIDs: true,
+                        includeState: true,
                     }, function (status, response) {
                         if (response.channels[roomname]) {
                             setOccupants(response.channels[roomname]);
@@ -116,7 +116,7 @@ const PubNubContextProvider = (props) => {
                     pubnub.hereNow({
                         channels: [response.channel],
                         includeUUIDs: true,
-  						includeState: true,
+                        includeState: true,
                     }, function (status, response) {
                         if (response.channels[roomname]) {
                             setOccupants(response.channels[roomname]);
@@ -154,8 +154,8 @@ const PubNubContextProvider = (props) => {
     useEffect(() => {
         console.log('Mounting app, setting up pubnub')
         return () => {
-                console.log('Unmounting app, shutting down pubnub')
-                pubnub.unsubscribeAll();
+            console.log('Unmounting app, shutting down pubnub')
+            pubnub.unsubscribeAll();
             }
     }, []);
 
