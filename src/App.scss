@@ -114,17 +114,37 @@ body {
 #channel-users {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   margin: 20px 16px;
-
-  p {
-    margin: 0;
-    font-weight: bold;
-    font-size: 14px;
-  }
 
   .fa-icon {
     margin: 0 0 0.25em 0;
+  }
+
+  #online-users-wrapper {
+    text-align: center;
+  }
+
+  #online-users-counter {
+    margin: 0;
+    font-weight: bold;
+    font-size: 14px;
+    
+    #open-user-list {
+      margin: 0 0 0 0.25rem;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    :hover {
+      color: #888;
+    }
+  }
+
+  #online-users-dropwdown {
+    ul {
+      list-style: none;
+    }
   }
 }
 
