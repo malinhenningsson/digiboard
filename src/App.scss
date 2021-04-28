@@ -148,7 +148,7 @@ body {
     margin: 0.5em;
     padding: 0.25em 0.5em;
     max-height: 400px;
-    min-width: 125px;
+    min-width: fit-content;
     overflow-y: auto;
     border: 1px solid #e2e2e2;
     border-radius: 0.5em;
@@ -172,10 +172,10 @@ body {
         span.online-mark {
           color: lightgreen;
           font-size: 14px;
-          margin-right: 0.5em;
         }
         
         span.user-name {
+          margin-right: 1em;
           font-weight: bold;
         }
       }

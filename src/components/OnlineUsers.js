@@ -12,7 +12,10 @@ const OnlineUsers = () => {
         if (occupants && occupants.occupants.length !== 0) {
         const users = occupants.occupants.map(occupant => {
             if (occupant.state !== null) {
-            return occupant.state.name;
+                return {
+                    name: occupant.state.name,
+                    id: occupant.uuid
+                };
             }
         })
         setOnlineUsers(users);
