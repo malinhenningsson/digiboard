@@ -30,13 +30,18 @@ const Room = () => {
     }
   }, [infoMessage]);
 
-  const handleLeaveEvent = () => {
+  const handleLeaveEvent = async () => {
     const res = window.confirm("Are you sure you want to leave the room?");
     if (res) {
-      unsubscribeFromChannel(channelId);
       navigate("/");
     }
   };
+
+  useEffect(() => {
+    return () => {
+      unsubscribeFromChannel(channelId);
+    }
+  }, []);
 
   return (
     <>
