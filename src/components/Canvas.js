@@ -33,7 +33,7 @@ const Canvas = ({
     // Record canvas left and top offset
     let offset = canv.getBoundingClientRect();
     setCanvasOffset({ x: parseInt(offset.left), y: parseInt(offset.top) });
-  }, [ctx]);
+  }, [ctx, canvasRef, parentRef]);
 
   // Listen to new recieved data
   useEffect(() => {

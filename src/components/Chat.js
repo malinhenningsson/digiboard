@@ -9,7 +9,7 @@ const Chat = ({ username, channelName }) => {
 
   useEffect(() => {
     setOwnUsername(username);
-  }, []);
+  }, [username]);
 
   return (
     <div id="chat-wrapper">
