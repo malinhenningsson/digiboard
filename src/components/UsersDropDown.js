@@ -8,7 +8,7 @@ const UsersDropDown = ({ onlineUsers }) => {
                 {
                     onlineUsers && onlineUsers.length > 0 && onlineUsers.map((user, index) => {
                     return (
-                        <li key={index}>{user}</li>
+                        <li key={index}> <span className="online-mark">●</span> <span className="user-name">{user}</span></li>
                     )
                     })
                 }
