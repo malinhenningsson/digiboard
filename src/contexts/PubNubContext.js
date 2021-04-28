@@ -65,6 +65,12 @@ const PubNubContextProvider = (props) => {
                     console.log('unsubscribing', event);
                     resetState();
                 }
+                if (event.category === "PNNetworkDownCategory") {
+                    setInfoMessage("Network is down, please wait or try again later.")
+                }
+                if (event.category === "PNNetworkUpCategory") {
+                    setInfoMessage("Network is up and running again.")
+                }
             },
             message(msg) {
                 if(msg) {
