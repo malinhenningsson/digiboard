@@ -110,7 +110,7 @@ const PubNubContextProvider = (props) => {
 
                     // get history in channel
                     if (pubnub.getUUID() === response.uuid) {
-                        getHistory(roomname);
+                        getHistory(response.channel);
                     };
                 }
                 if (response.action === "leave") {
