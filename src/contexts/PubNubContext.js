@@ -185,9 +185,7 @@ const PubNubContextProvider = (props) => {
 
     // Unsubscribe user to all channels when closing browser
     useEffect(() => {
-        console.log('Mounting app, setting up pubnub')
         return () => {
-            console.log('Unmounting app, shutting down pubnub')
             pubnub.unsubscribeAll();
             }
     }, []);
