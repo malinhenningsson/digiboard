@@ -108,7 +108,10 @@ const PubNubContextProvider = (props) => {
                         }
                     });
 
-                    getHistory();
+                    // get history in channel
+                    if (pubnub.getUUID() === response.uuid) {
+                        getHistory(roomname);
+                    };
                 }
                 if (response.action === "leave") {
                     // Only show "user left" message to other users
@@ -154,14 +157,28 @@ const PubNubContextProvider = (props) => {
     };
 
     const getHistory = (roomname) => {
-        pubnub.history(
+        pubnub.fetchMessages(
             {
-                channel: roomname,
-                count: 50,
-                stringifiedTimeToken: true,
+                channels: [roomname],
+                count: 25,
+                reverse: true
             },
             function (status, response) {
-                console.log("history", response);
+                if (!status.error) {
+                    if (!response.channels[roomname]) return; 
+                    const history = response.channels[roomname];
+                    const fetchedChat = [];
+                    history.forEach(obj => {
+                        console.log(obj)
+                        if (obj.message.chat) {
+                            fetchedChat.push(obj.message.chat);
+                        }
+                        if (obj.message.canvas) {
+                            setCanvasData(obj.message.canvas);
+                        }
+                    });
+                    setMessageData(fetchedChat);
+                };
             }
         );
     };

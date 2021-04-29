@@ -18,7 +18,6 @@ const ChatPopUp = ({ channelName, username }) => {
   }, [messageData]);
 
   const handleSubmit = (e) => {
-    console.log(message);
     e.preventDefault();
 
     publishToChannel(channelName, {
