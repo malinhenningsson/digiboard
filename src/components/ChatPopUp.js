@@ -8,7 +8,6 @@ const ChatPopUp = ({ channelName, username }) => {
   const { publishToChannel, messageData, pubnub } = usePubnub();
 
   useEffect(() => {
-    console.log("message data: ", messageData);
     setMessageList(messageData);
 
     // Scroll last received message into view

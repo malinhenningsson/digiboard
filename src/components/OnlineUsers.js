@@ -8,7 +8,6 @@ const OnlineUsers = () => {
     const { occupants } = usePubnub();
 
     useEffect(() => {
-        console.log('occupants', occupants)
         if (occupants && occupants.occupants.length !== 0) {
         const users = occupants.occupants.map(occupant => {
             if (occupant.state !== null) {
