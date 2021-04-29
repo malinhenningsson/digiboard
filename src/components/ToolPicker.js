@@ -7,7 +7,7 @@ import {
   faPalette,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
-import { usePubnub } from "../contexts/PubNubContext";
+import OnlineUsers from "./OnlineUsers";
 
 const ToolPicker = ({
   color,
@@ -30,7 +30,6 @@ const ToolPicker = ({
     left: "0px",
   };
   const [displayed, setDisplayed] = useState(false);
-  const { occupants } = usePubnub();
 
   const handleClick = () => {
     setDisplayed(true);
@@ -84,7 +83,7 @@ const ToolPicker = ({
           icon={faUserPlus}
           onClick={() => setShowInviteUsers(!showInviteUsers)}
         />
-        <p>Occupancy: {occupants ? occupants.occupancy : "0"}</p>
+        <OnlineUsers />
       </div>
     </div>
   );

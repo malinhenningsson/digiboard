@@ -10,21 +10,20 @@ const usePubnub = () => {
     }
     return context;
 }
+const newUUID = `user-${Date.now()}`;
+const pubnub = new PubNub({
+    publishKey: process.env.REACT_APP_PUBNUB_PUBLISH_KEY,
+    subscribeKey: process.env.REACT_APP_PUBNUB_SUBSCRIBE_KEY,
+    ssl: true,
+    uuid: newUUID,
+    restore: true,
+});
 
 const PubNubContextProvider = (props) => {
     const [occupants, setOccupants] = useState(null);
     const [canvasData, setCanvasData] = useState(null);
     const [messageData, setMessageData] = useState([]);
     const [infoMessage, setInfoMessage] = useState("");
-
-    const newUUID = `user-${Date.now()}`;
-    const pubnub = new PubNub({
-        publishKey: process.env.REACT_APP_PUBNUB_PUBLISH_KEY,
-        subscribeKey: process.env.REACT_APP_PUBNUB_SUBSCRIBE_KEY,
-        ssl: true,
-        uuid: newUUID,
-        restore: true,
-    });
 
     const resetState = () => {
         setOccupants(null);
@@ -66,6 +65,12 @@ const PubNubContextProvider = (props) => {
                     console.log('unsubscribing', event);
                     resetState();
                 }
+                if (event.category === "PNNetworkDownCategory") {
+                    setInfoMessage("Network is down, please wait or try again later.")
+                }
+                if (event.category === "PNNetworkUpCategory") {
+                    setInfoMessage("Network is up and running again.")
+                }
             },
             message(msg) {
                 if(msg) {
@@ -78,6 +83,7 @@ const PubNubContextProvider = (props) => {
                             newMessages.push({
                                 username: msg.message.chat.username,
                                 text: msg.message.chat.text,
+                                publisher: msg.publisher,
                             });
                             setMessageData(messageData => messageData.concat(newMessages));
                         }
@@ -94,8 +100,8 @@ const PubNubContextProvider = (props) => {
 
                     pubnub.hereNow({
                         channels: [response.channel],
-						includeUUIDs: true,
-  						includeState: true,
+                        includeUUIDs: true,
+                        includeState: true,
                     }, function (status, response) {
                         if (response.channels[roomname]) {
                             setOccupants(response.channels[roomname]);
@@ -111,7 +117,9 @@ const PubNubContextProvider = (props) => {
                     };
 
                     pubnub.hereNow({
-                        channels: [response.channel]
+                        channels: [response.channel],
+                        includeUUIDs: true,
+                        includeState: true,
                     }, function (status, response) {
                         if (response.channels[roomname]) {
                             setOccupants(response.channels[roomname]);
@@ -162,8 +170,8 @@ const PubNubContextProvider = (props) => {
     useEffect(() => {
         console.log('Mounting app, setting up pubnub')
         return () => {
-                console.log('Unmounting app, shutting down pubnub')
-                pubnub.unsubscribeAll();
+            console.log('Unmounting app, shutting down pubnub')
+            pubnub.unsubscribeAll();
             }
     }, []);
 

@@ -47,11 +47,6 @@ const Room = () => {
     <>
       <div>
         <Whiteboard
-          username={
-            location.state && location.state.username
-              ? location.state.username
-              : "Anonymous"
-          }
           channelName={channelId}
           showInviteUsers={showInviteUsers}
           setShowInviteUsers={setShowInviteUsers}

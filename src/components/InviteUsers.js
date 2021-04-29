@@ -44,8 +44,8 @@ const InviteUsers = ({ username, showInviteUsers, setShowInviteUsers }) => {
   };
 
   return (
-    <div id="invite-users-wrapper">
-      <div id="invite-users-content">
+    <div id="invite-users-wrapper" onClick={() => closeInviteBox()}>
+      <div id="invite-users-content" onClick={(e) => e.stopPropagation()}>
         <div className="fa-icon-box">
           <FontAwesomeIcon
             title="close invitation box"
