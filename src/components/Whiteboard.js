@@ -10,9 +10,11 @@ const Whiteboard = ({ channelName, showInviteUsers, setShowInviteUsers }) => {
   const [clearTheCanvas, setClearTheCanvas] = useState(false);
 
   const handleDownloadCanvas = () => {
-    const imgData = canvasRef.current.toDataURL("image/png", 1.0);
     const pdf = new jsPDF("l", "px", "a4");
-    pdf.addImage(imgData, "PNG", 0, 0, 500, 500);
+    const width = pdf.internal.pageSize.getWidth();
+    const height = pdf.internal.pageSize.getHeight();
+    const imgData = canvasRef.current.toDataURL("image/png", 1.0);
+    pdf.addImage(imgData, "PNG", 0, 0, width, height);
     pdf.save("sample-file.pdf");
   };
 
