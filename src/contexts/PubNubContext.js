@@ -9,7 +9,8 @@ const usePubnub = () => {
         throw new Error('`usePubNub` hook must be used within a `PubNubContextProvider` component');
     }
     return context;
-}
+};
+
 const newUUID = `user-${Date.now()}`;
 const pubnub = new PubNub({
     publishKey: process.env.REACT_APP_PUBNUB_PUBLISH_KEY,
@@ -47,39 +48,31 @@ const PubNubContextProvider = (props) => {
 
         listener = {
             status(event) {
-                console.log('event', event)
                 if (event.category === "PNConnectedCategory") {
-                    console.log('connected', event);
                     pubnub.setState({
                         channels: [roomname],
                         state: {'name': username ? username : "Anonymous"},
-                        callback : function(m){console.log(m)},
-                        error : function(m){console.log(m)}
                     });
-                }
-                if (event.category === "PNReconnectedCategory") {
-                    console.log('reconnected', event);
-                }
-                if (event.operation === "PNSubscribeOperation") {
-                    console.log('subscribing', event.affectedChannels)
-                }
+                };
                 if (event.operation === "PNUnsubscribeOperation") {
-                    console.log('unsubscribing', event);
                     resetState();
-                }
+                };
                 if (event.category === "PNNetworkDownCategory") {
                     setInfoMessage("Network is down, please wait or try again later.")
-                }
+                };
                 if (event.category === "PNNetworkUpCategory") {
                     setInfoMessage("Network is up and running again.")
-                }
+                };
+                if (event.category === "PNNetworkIssuesCategory") {
+                    setInfoMessage("There seem to be issues with the network, please wait or try again later.")
+                };
             },
             message(msg) {
                 if(msg) {
                     if(msg.message) {
                         if(msg.message.canvas) {
                             setCanvasData(msg.message.canvas);
-                        }
+                        };
                         if(msg.message.chat) {
                             let newMessages = [];
                             newMessages.push({
@@ -88,9 +81,9 @@ const PubNubContextProvider = (props) => {
                                 publisher: msg.publisher,
                             });
                             setMessageData(messageData => messageData.concat(newMessages));
-                        }
-                    }
-                }
+                        };
+                    };
+                };
             },
             async presence(response) {
                 setInfoMessage("");
@@ -107,14 +100,14 @@ const PubNubContextProvider = (props) => {
                     }, function (status, response) {
                         if (response.channels[roomname]) {
                             setOccupants(response.channels[roomname]);
-                        }
+                        };
                     });
 
-                    // get history in channel
+                    // Only get history in channel for the user joining
                     if (pubnub.getUUID() === response.uuid) {
                         getHistory(response.channel);
                     };
-                }
+                };
                 if (response.action === "leave") {
                     // Only show "user left" message to other users
                     if (pubnub.getUUID() !== response.uuid) {
@@ -128,12 +121,9 @@ const PubNubContextProvider = (props) => {
                     }, function (status, response) {
                         if (response.channels[roomname]) {
                             setOccupants(response.channels[roomname]);
-                        }
+                        };
                     });
-                }
-                if (response.action === "state-change") {
-                    console.log('state change', response)
-                }
+                };
             },
         };
         pubnub.addListener(listener);
@@ -173,13 +163,12 @@ const PubNubContextProvider = (props) => {
                     const history = response.channels[roomname];
                     const fetchedChat = [];
                     history.forEach(obj => {
-                        console.log(obj)
                         if (obj.message.chat) {
                             fetchedChat.push(obj.message.chat);
-                        }
+                        };
                         if (obj.message.canvas) {
                             setCanvasData(obj.message.canvas);
-                        }
+                        };
                     });
                     setMessageData(fetchedChat);
                 };
@@ -194,8 +183,7 @@ const PubNubContextProvider = (props) => {
             }
     }, []);
 
-    // Object with context values
-    let constextValues = {
+    const constextValues = {
         pubnub,
         usePubnub,
         subscribeToChannel,
@@ -212,6 +200,6 @@ const PubNubContextProvider = (props) => {
             {props.children}
         </PubNubContext.Provider>
     )
-}
+};
 
-export { PubNubContext, usePubnub, PubNubContextProvider as default }
+export { PubNubContext, usePubnub, PubNubContextProvider as default };
