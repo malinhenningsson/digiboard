@@ -24,6 +24,7 @@ const PubNubContextProvider = (props) => {
     const [canvasData, setCanvasData] = useState(null);
     const [messageData, setMessageData] = useState([]);
     const [infoMessage, setInfoMessage] = useState("");
+    let listener = {};
 
     const resetState = () => {
         setOccupants(null);
@@ -37,13 +38,14 @@ const PubNubContextProvider = (props) => {
         return res.channels[roomname].name;
     };
 
+
     const subscribeToChannel = (roomname, username) => {
         pubnub.subscribe({
             channels: [roomname],
             withPresence: true,
         });
 
-        pubnub.addListener({
+        listener = {
             status(event) {
                 console.log('event', event)
                 if (event.category === "PNConnectedCategory") {
@@ -133,10 +135,12 @@ const PubNubContextProvider = (props) => {
                     console.log('state change', response)
                 }
             },
-        });
+        };
+        pubnub.addListener(listener);
     };
 
     const unsubscribeFromChannel = (roomname) => {
+        pubnub.removeListener(listener);
         pubnub.unsubscribe({
             channels: [roomname]
         });
@@ -185,9 +189,7 @@ const PubNubContextProvider = (props) => {
 
     // Unsubscribe user to all channels when closing browser
     useEffect(() => {
-        console.log('Mounting app, setting up pubnub')
         return () => {
-            console.log('Unmounting app, shutting down pubnub')
             pubnub.unsubscribeAll();
             }
     }, []);
