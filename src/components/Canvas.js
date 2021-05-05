@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { usePubnub } from "../contexts/PubNubContext";
 
 const Canvas = ({
-  parentRef,
   canvasRef,
   color,
   channelName,
@@ -12,6 +11,7 @@ const Canvas = ({
   const [ctx, setCtx] = useState({});
   const [isActive, setIsActive] = useState(false);
   const [canvasOffset, setCanvasOffset] = useState({ x: 0, y: 0 });
+  const parentRef = useRef(null);
   let plots = [];
 
   // Get pubnub connections

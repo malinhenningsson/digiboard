@@ -4,7 +4,6 @@ import ToolPicker from "./ToolPicker";
 import { jsPDF } from "jspdf";
 
 const Whiteboard = ({ channelName, showInviteUsers, setShowInviteUsers }) => {
-  const parentRef = useRef(null);
   const canvasRef = useRef(null);
   const [color, setColor] = useState("#000000");
   const [clearTheCanvas, setClearTheCanvas] = useState(false);
@@ -19,7 +18,7 @@ const Whiteboard = ({ channelName, showInviteUsers, setShowInviteUsers }) => {
   };
 
   return (
-    <div id="whiteboard-wrapper" ref={parentRef}>
+    <div id="whiteboard-wrapper">
       <ToolPicker
         color={color}
         setColor={setColor}
@@ -30,7 +29,6 @@ const Whiteboard = ({ channelName, showInviteUsers, setShowInviteUsers }) => {
         handleDownloadCanvas={handleDownloadCanvas}
       />
       <Canvas
-        parentRef={parentRef}
         canvasRef={canvasRef}
         color={color}
         channelName={channelName}

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { usePubnub } from "../contexts/PubNubContext";
 
 const Lobby = () => {
@@ -15,7 +14,7 @@ const Lobby = () => {
     if (window.location.pathname === `/invite/${channelId}`) {
       setIsInvite(true);
     }
-  }, [channelId])
+  }, [channelId]);
 
   const getRandomRoomName = () => {
     return Math.random().toString(20).substr(2, 10);
@@ -36,38 +35,40 @@ const Lobby = () => {
 
   return (
     <div id="lobby-wrapper">
-      <h1>DigiBoard</h1>
-      <div id="lobby-invite-info">
-        {
-          isInvite 
-          ? (
-              <>
-                <p>You are invited to join a digital collaboration session.</p> 
-                <p>Please select a username and join the Digiboard.</p>
-              </>
-          ) : (
-            <>
-              <p>The number one place for digital collaborations.</p>
-              <p>Please select a username to create a Digiboard.</p>
-            </>
-          )
-        }
-      </div>
-      <form id="lobby-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Choose a username"
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <button>
-          { isInvite ? (
-              "Join Digiboard"
+      <div id="lobby-content">
+        <h1>DigiBoard</h1>
+        <div id="lobby-invite-info">
+          {
+            isInvite 
+            ? (
+                <>
+                  <p>You are invited to join a digital collaboration session.</p> 
+                  <p>Please select a username and join the Digiboard.</p>
+                </>
             ) : (
-              "Create Digiboard"
+              <>
+                <p>The number one place for digital collaborations.</p>
+                <p>Please select a username to create a Digiboard.</p>
+              </>
             )
           }
-          </button>
-      </form>
+        </div>
+        <form id="lobby-form" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Choose a username"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <button>
+            { isInvite ? (
+                "Join Digiboard"
+              ) : (
+                "Create Digiboard"
+              )
+            }
+            </button>
+        </form>
+      </div>
     </div>
   );
 };
