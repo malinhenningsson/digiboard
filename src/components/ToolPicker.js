@@ -17,18 +17,6 @@ const ToolPicker = ({
   setShowInviteUsers,
   handleDownloadCanvas,
 }) => {
-  const popover = {
-    position: "absolute",
-    zIndex: "2",
-    marginLeft: "8px",
-  };
-  const cover = {
-    position: "fixed",
-    top: "0px",
-    right: "0px",
-    bottom: "0px",
-    left: "0px",
-  };
   const [displayed, setDisplayed] = useState(false);
 
   const handleClick = () => {
@@ -58,8 +46,8 @@ const ToolPicker = ({
           onClick={handleClick}
         />
         {displayed ? (
-          <div style={popover}>
-            <div style={cover} onClick={handleClose} />
+          <div id="toolpicker-color-popover">
+            <div id="toolpicker-color-cover" onClick={handleClose} />
             <ChromePicker color={color} onChange={handleChange} />
           </div>
         ) : null}

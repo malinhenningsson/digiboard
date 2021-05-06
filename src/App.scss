@@ -136,6 +136,20 @@ body {
       color: #888;
     }
   }
+
+  #toolpicker-color-popover {
+    position: absolute;
+    z-index: 2;
+    margin-left: 8px,
+  }
+
+  #toolpicker-color-cover {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+  }
 }
 
 #canvas-wrapper {
