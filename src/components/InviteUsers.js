@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { init, send } from "emailjs-com";
+import Loader from "./Loader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const InviteUsers = ({ username, showInviteUsers, setShowInviteUsers }) => {
   const [email, setEmail] = useState("");
   const [invitationSent, setInvitationSent] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { channelId } = useParams();
   const url = `${window.location.origin}/invite/${channelId}`;
 
@@ -19,6 +21,7 @@ const InviteUsers = ({ username, showInviteUsers, setShowInviteUsers }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const templateParams = {
       email: email,
@@ -28,9 +31,12 @@ const InviteUsers = ({ username, showInviteUsers, setShowInviteUsers }) => {
 
     send("default_service", "template_dmf1l6e", templateParams)
       .then((res) => {
+        setLoading(false);
         setInvitationSent(true);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setLoading(false);
+      });
   };
 
   const closeInviteBox = () => {
@@ -70,7 +76,7 @@ const InviteUsers = ({ username, showInviteUsers, setShowInviteUsers }) => {
           </>
         ) : (
           <>
-            <h1>Intive others to join you digiboard</h1>
+            <h1>Intive others to join your digiboard</h1>
             <form onSubmit={(e) => handleSubmit(e)}>
               <input
                 type="email"
@@ -78,7 +84,14 @@ const InviteUsers = ({ username, showInviteUsers, setShowInviteUsers }) => {
                 value={email}
                 onChange={(e) => handleChange(e)}
               />
-              <button>Send invite</button>
+              <div id="loader-and-button">
+                {
+                  loading && <Loader />
+                }
+                <button disabled={loading || !email} >
+                  Send invite
+                </button>
+              </div>
             </form>
           </>
         )}

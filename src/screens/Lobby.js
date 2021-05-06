@@ -59,7 +59,7 @@ const Lobby = () => {
             placeholder="Choose a username"
             onChange={(e) => setUsername(e.target.value)}
           />
-          <button>
+          <button disabled={!username}>
             { isInvite ? (
                 "Join Digiboard"
               ) : (
