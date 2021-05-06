@@ -15,7 +15,7 @@ const Chat = ({ username, channelName }) => {
         />
       )}
       <FontAwesomeIcon
-        title="open or close chat"
+        title="toggle chat popup"
         className="fa-icon"
         icon={faComments}
         onClick={() => setOpenChat(!openChat)}

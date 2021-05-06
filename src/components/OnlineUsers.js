@@ -23,7 +23,11 @@ const OnlineUsers = () => {
 
 	return (
 		<div id="online-users-wrapper">
-			<p id="online-users-counter" onClick={() => setOpenUserList(!openUserList)}>
+			<p 
+				id="online-users-counter" 
+				title="list of connected users" 
+				onClick={() => setOpenUserList(!openUserList)}
+			>
 				Online: {occupants ? occupants.occupancy : "0"} 
 				<span id="open-user-list">▼</span>
 			</p>

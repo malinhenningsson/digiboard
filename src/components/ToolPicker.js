@@ -52,7 +52,7 @@ const ToolPicker = ({
           </div>
         ) : null}
         <FontAwesomeIcon
-          title="choose color"
+          title="delete"
           className="fa-icon"
           icon={faTrashAlt}
           onClick={() => setClearTheCanvas(true)}
