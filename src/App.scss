@@ -1,5 +1,10 @@
 @import "~bootstrap/scss/bootstrap";
 
+$light-purple: #B9B6E5;
+$base-gradient: linear-gradient(-225deg, #7DE2FC 0%, #B9B6E5 100%);
+$base-shadow-dark: 0px 0px 10px 3px rgba(100, 100, 100, 0.4);
+$base-shadow-light: 0px 0px 10px 3px rgba(100, 100, 100, 0.3);
+
 * {
   margin: 0;
   padding: 0;
@@ -16,7 +21,7 @@ body {
 }
 
 #lobby-wrapper {
-  background-image: linear-gradient(-225deg, #7DE2FC 0%, #B9B6E5 100%);
+  background-image: $base-gradient;
   color: white;
   width: 100vw;
   height: 100vh;
@@ -37,12 +42,12 @@ body {
     -moz-box-shadow: none;
     
     @media screen and (min-width: 600px) {
-      background-image: linear-gradient(-225deg, #7DE2FC 0%, #B9B6E5 100%);
+      background-image: $base-gradient;
       background-blend-mode: lighten;
       border-radius: 0.5em;
-      box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.4);
-      -webkit-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.4);
-      -moz-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.4);
+      box-shadow: $base-shadow-dark;
+      -webkit-box-shadow: $base-shadow-dark;
+      -moz-box-shadow: $base-shadow-dark;
       padding: 2rem 4rem;
     }
   }
@@ -105,7 +110,7 @@ body {
       font-size: 1.25em;
       }
     button:hover {
-      background-color: #B9B6E5;
+      background-color: $light-purple;
     }
 
     @media screen and (min-width: 600px) {
@@ -133,7 +138,7 @@ body {
     font-size: 2em;
     margin: 20px 16px;
     :hover {
-      color: #888;
+      color: $light-purple;
     }
   }
 
@@ -159,9 +164,9 @@ body {
   cursor: crosshair;
   background-color: white;
   border: 3px solid #333;
-  box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.3);
-  -webkit-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.3);
-  -moz-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.3);
+  box-shadow: $base-shadow-light;
+  -webkit-box-shadow: $base-shadow-light;
+  -moz-box-shadow: $base-shadow-light;
 }
 
 #channel-users {
@@ -191,7 +196,7 @@ body {
   }
 
   #online-users-counter:hover {
-    color: #888;
+    color: $light-purple;
   }
 
   #online-users-dropwdown {
@@ -206,9 +211,9 @@ body {
     border: 1px solid #e2e2e2;
     border-radius: 4px;
     background-color: #ffffff;
-    box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.3);
-    -webkit-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.3);
-    -moz-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.3);
+    box-shadow: $base-shadow-light;
+    -webkit-box-shadow: $base-shadow-light;
+    -moz-box-shadow: $base-shadow-light;
     cursor: default;
 
     ul {
@@ -236,10 +241,6 @@ body {
   }
 }
 
-#room-footer-wrapper {
-  background-color: yellow;
-}
-
 #chat-wrapper {
   .fa-icon {
     position: absolute;
@@ -249,7 +250,7 @@ body {
     font-size: 2em;
     margin: 20px 16px;
     :hover {
-      color: #888;
+      color: $light-purple;
     }
   }
 
@@ -261,9 +262,9 @@ body {
     width: 300px;
     border-radius: 0.5em 0.5em 0 0;
     background-color: #ffffff;
-    box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.4);
-    -webkit-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.4);
-    -moz-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.4);
+    box-shadow: $base-shadow-dark;
+    -webkit-box-shadow: $base-shadow-dark;
+    -moz-box-shadow: $base-shadow-dark;
   }
 
   #chat-msg-box-content {
@@ -341,10 +342,10 @@ body {
   #invite-users-content {
     z-index: 2;
     border-radius: 4px;
-    background-image: linear-gradient(-225deg, #7DE2FC 0%, #B9B6E5 100%);
-    box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.4);
-    -webkit-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.4);
-    -moz-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.4);
+    background-image: $base-gradient;
+    box-shadow: $base-shadow-dark;
+    -webkit-box-shadow: $base-shadow-dark;
+    -moz-box-shadow: $base-shadow-dark;
     padding: 2rem 3rem;
     cursor: default;
 
@@ -358,7 +359,7 @@ body {
       cursor: pointer;
     }
     .fa-icon:hover {
-      color: #888;
+      color: $light-purple;
     }
 
     h1 {
@@ -392,7 +393,7 @@ body {
         font-weight: bold;
       }
       button:hover {
-        background-color: #B9B6E5;
+        background-color: $light-purple;
       }
     }
 
@@ -405,7 +406,7 @@ body {
         cursor: pointer;
       }
       .add-user:hover {
-        color: #888;
+        color: $light-purple;
       }
     }
   }
@@ -418,17 +419,16 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 4px;
-  background-image: linear-gradient(-225deg, #7DE2FC 0%, #B9B6E5 100%);
+  background-image: $base-gradient;
   padding: 1rem 2rem;
-  box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.4);
-  -webkit-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.4);
-  -moz-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.4);
+  box-shadow: $base-shadow-dark;
+  -webkit-box-shadow: $base-shadow-dark;
+  -moz-box-shadow: $base-shadow-dark;
   p {
     font-weight: bold;
     margin-bottom: 0;
   }
 }
-
 
 .fa-icon-leave {
   position: absolute;
@@ -438,6 +438,6 @@ body {
   font-size: 2em;
   margin: 20px 16px;
   :hover {
-    color: #888;
+    color: $light-purple;
   }
 }
