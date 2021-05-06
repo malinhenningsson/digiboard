@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { usePubnub } from "../contexts/PubNubContext";
 
 const Canvas = ({
-  parentRef,
   canvasRef,
   color,
   channelName,
@@ -12,6 +11,7 @@ const Canvas = ({
   const [ctx, setCtx] = useState({});
   const [isActive, setIsActive] = useState(false);
   const [canvasOffset, setCanvasOffset] = useState({ x: 0, y: 0 });
+  const parentRef = useRef(null);
   let plots = [];
 
   // Get pubnub connections
@@ -19,19 +19,19 @@ const Canvas = ({
 
   // Set up canvas and context
   useEffect(() => {
-    let canv = canvasRef.current;
+    const canv = canvasRef.current;
     canv.width = parentRef.current.offsetWidth;
     canv.height = parentRef.current.offsetHeight;
 
     // Set up canvas context
-    let canvContext = canv.getContext("2d");
+    const canvContext = canv.getContext("2d");
     canvContext.lineJoin = "round";
     canvContext.lineCap = "round";
     canvContext.lineWidth = 5;
     setCtx(canvContext);
 
     // Record canvas left and top offset
-    let offset = canv.getBoundingClientRect();
+    const offset = canv.getBoundingClientRect();
     setCanvasOffset({ x: parseInt(offset.left), y: parseInt(offset.top) });
   }, [ctx, canvasRef, parentRef]);
 
@@ -94,8 +94,8 @@ const Canvas = ({
     e.preventDefault();
     if (!isActive) return;
 
-    let mousex = e.clientX - canvasOffset.x;
-    let mousey = e.clientY - canvasOffset.y;
+    const mousex = e.clientX - canvasOffset.x;
+    const mousey = e.clientY - canvasOffset.y;
 
     plots.push({ x: mousex, y: mousey });
 

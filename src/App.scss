@@ -1,5 +1,11 @@
 @import "~bootstrap/scss/bootstrap";
 
+$light-green: #8ddad5;
+$darker-green: #20B2AA;
+$base-gradient: linear-gradient(-20deg, #00cdac 0%, #8ddad5 100%);
+$base-shadow-dark: 0px 0px 10px 3px rgba(100, 100, 100, 0.4);
+$base-shadow-light: 0px 0px 10px 3px rgba(100, 100, 100, 0.3);
+
 * {
   margin: 0;
   padding: 0;
@@ -9,6 +15,7 @@
 body {
   background-color: #fff;
   color: #333;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .container-fluid {
@@ -16,7 +23,7 @@ body {
 }
 
 #lobby-wrapper {
-  background-color: #333;
+  background-image: $base-gradient;
   color: white;
   width: 100vw;
   height: 100vh;
@@ -25,10 +32,32 @@ body {
   justify-content: center;
   align-items: center;
 
+  #lobby-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: none;
+    padding: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    
+    @media screen and (min-width: 600px) {
+      background-image: $base-gradient;
+      background-blend-mode: lighten;
+      border-radius: 0.5em;
+      box-shadow: $base-shadow-dark;
+      -webkit-box-shadow: $base-shadow-dark;
+      -moz-box-shadow: $base-shadow-dark;
+      padding: 2rem 4rem;
+    }
+  }
+  
   h1 {
     font-family: "Black Ops One", cursive, monospace;
-    font-size: 3rem;
-    margin: 1rem 0;
+    font-size: 3.25rem;
+    margin: 2rem 0 1.5rem;
   }
 
   #lobby-invite-info {
@@ -40,7 +69,7 @@ body {
       margin-bottom: 0.5rem;
 
       @media screen and (min-width: 600px) {
-        font-size: 16px;
+        font-size: 18px;
       }
     }
   }
@@ -61,24 +90,28 @@ body {
       border: none;
       border-bottom: 2px dashed #fff;
       font-size: 1.25em;
-
+      
       @media screen and (min-width: 600px) {
         width: 100%;
         min-width: 400px;
       }
     }
+    ::placeholder {
+      color: #dfe9f3;
+    }
 
     button {
-      background-color: lightgreen;
-      color: #333;
-      border: none;
-      border-radius: 0.5em;
-      padding: 0.25em 2em;
-      margin: 3rem 0;
+      background-color: transparent;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      border-radius: 0.75em;
+      padding: 0.25em 1.5em;
+      margin: 3rem 0 2rem;
+      font-weight: bold;
       font-size: 1.25em;
-    }
+      }
     button:hover {
-      background-color: rgba(144, 238, 144, 0.774);
+      background-color: $light-green;
     }
 
     @media screen and (min-width: 600px) {
@@ -90,9 +123,9 @@ body {
 #whiteboard-wrapper {
   height: 100vh;
   width: 100%;
-  cursor: crosshair;
   margin: 0 auto;
   overflow: hidden;
+  background-image: linear-gradient(to bottom, #fdfbfb 0%, #ebedee 100%);
 }
 
 #toolpicker-wrapper {
@@ -106,9 +139,35 @@ body {
     font-size: 2em;
     margin: 20px 16px;
     :hover {
-      color: #888;
+      color: $light-green;
     }
   }
+
+  #toolpicker-color-popover {
+    position: absolute;
+    z-index: 2;
+    margin-left: 8px,
+  }
+
+  #toolpicker-color-cover {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+  }
+}
+
+#canvas-wrapper {
+  height: 80vh;
+  width: 85vw;
+  margin: auto;
+  cursor: crosshair;
+  background-color: white;
+  border: 3px solid #333;
+  box-shadow: $base-shadow-light;
+  -webkit-box-shadow: $base-shadow-light;
+  -moz-box-shadow: $base-shadow-light;
 }
 
 #channel-users {
@@ -138,7 +197,7 @@ body {
   }
 
   #online-users-counter:hover {
-    color: #888;
+    color: $light-green;
   }
 
   #online-users-dropwdown {
@@ -151,11 +210,11 @@ body {
     min-width: fit-content;
     overflow-y: auto;
     border: 1px solid #e2e2e2;
-    border-radius: 0.5em;
+    border-radius: 4px;
     background-color: #ffffff;
-    box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.2);
-    -webkit-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.2);
-    -moz-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.2);
+    box-shadow: $base-shadow-light;
+    -webkit-box-shadow: $base-shadow-light;
+    -moz-box-shadow: $base-shadow-light;
     cursor: default;
 
     ul {
@@ -167,11 +226,11 @@ body {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin: 0.5em 0.25em 0.5em 0.25em;
+        margin: 0.5em;
         
         span.online-mark {
           color: lightgreen;
-          font-size: 14px;
+          font-size: 16px;
         }
         
         span.user-name {
@@ -192,7 +251,7 @@ body {
     font-size: 2em;
     margin: 20px 16px;
     :hover {
-      color: #888;
+      color: $light-green;
     }
   }
 
@@ -202,12 +261,11 @@ body {
     right: 75px;
     height: 400px;
     width: 300px;
-    border: 1px solid #e2e2e2;
     border-radius: 0.5em 0.5em 0 0;
     background-color: #ffffff;
-    box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.2);
-    -webkit-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.2);
-    -moz-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.2);
+    box-shadow: $base-shadow-dark;
+    -webkit-box-shadow: $base-shadow-dark;
+    -moz-box-shadow: $base-shadow-dark;
   }
 
   #chat-msg-box-content {
@@ -226,9 +284,9 @@ body {
       .your-msg {
         width: fit-content;
         max-width: 70%;
-        background-color: rgb(47, 47, 255);
+        background-color: $darker-green;
         color: white;
-        border-radius: 1em;
+        border-radius: 0.75em 0.5em 0 0.75em;
         margin: 0.5em 0 0.5em auto;
         padding: 0.5em 0.75em;
       }
@@ -238,7 +296,7 @@ body {
         max-width: 70%;
         background-color: gainsboro;
         color: #333;
-        border-radius: 1em;
+        border-radius: 0.5em 0.75em 0.75em 0;
         margin: 0.5em auto 0.5em 0;
         padding: 0.5em 0.75em;
       }
@@ -249,7 +307,7 @@ body {
     }
 
     #chat-input-wrapper {
-      background-color: lightgray;
+      background-color: #9f9f9f;
       padding: 0.25em 0.75em 0.5em;
   
       input {
@@ -279,17 +337,16 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.4);
   cursor: pointer;
 
   #invite-users-content {
     z-index: 2;
-    border: 1px solid rgb(122, 201, 122);
     border-radius: 4px;
-    background-color: rgba(144, 238, 144, 0.95);
-    box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.2);
-    -webkit-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.2);
-    -moz-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.2);
+    background-image: $base-gradient;
+    box-shadow: $base-shadow-dark;
+    -webkit-box-shadow: $base-shadow-dark;
+    -moz-box-shadow: $base-shadow-dark;
     padding: 2rem 3rem;
     cursor: default;
 
@@ -303,7 +360,7 @@ body {
       cursor: pointer;
     }
     .fa-icon:hover {
-      color: #888;
+      color: $light-green;
     }
 
     h1 {
@@ -337,7 +394,7 @@ body {
         font-weight: bold;
       }
       button:hover {
-        background-color:  rgb(122, 201, 122);
+        background-color: $light-green;
       }
     }
 
@@ -350,7 +407,7 @@ body {
         cursor: pointer;
       }
       .add-user:hover {
-        color: #888;
+        color: $light-green;
       }
     }
   }
@@ -362,19 +419,17 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border: 1px solid rgb(122, 201, 122);
   border-radius: 4px;
-  background-color: rgba(144, 238, 144, 0.9);
+  background-image: $base-gradient;
   padding: 1rem 2rem;
-  box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.2);
-  -webkit-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.2);
-  -moz-box-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.2);
+  box-shadow: $base-shadow-dark;
+  -webkit-box-shadow: $base-shadow-dark;
+  -moz-box-shadow: $base-shadow-dark;
   p {
     font-weight: bold;
     margin-bottom: 0;
   }
 }
-
 
 .fa-icon-leave {
   position: absolute;
@@ -384,6 +439,6 @@ body {
   font-size: 2em;
   margin: 20px 16px;
   :hover {
-    color: #888;
+    color: $light-green;
   }
 }

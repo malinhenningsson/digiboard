@@ -6,9 +6,7 @@ import InviteUsers from "../components/InviteUsers";
 import { usePubnub } from "../contexts/PubNubContext";
 import PopUp from "../components/PopUp";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronLeft
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 
 const Room = () => {
   const [showInviteUsers, setShowInviteUsers] = useState(false);
