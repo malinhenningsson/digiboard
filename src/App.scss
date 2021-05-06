@@ -1,9 +1,7 @@
 @import "~bootstrap/scss/bootstrap";
 
-$light-purple: #B9B6E5;
 $light-green: #8ddad5;
 $darker-green: #20B2AA;
-$base-gradient-purple: linear-gradient(-225deg, #7DE2FC 0%, #B9B6E5 100%);
 $base-gradient: linear-gradient(-20deg, #00cdac 0%, #8ddad5 100%);
 $base-shadow-dark: 0px 0px 10px 3px rgba(100, 100, 100, 0.4);
 $base-shadow-light: 0px 0px 10px 3px rgba(100, 100, 100, 0.3);
@@ -127,7 +125,6 @@ body {
   width: 100%;
   margin: 0 auto;
   overflow: hidden;
-  // background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);
   background-image: linear-gradient(to bottom, #fdfbfb 0%, #ebedee 100%);
 }
 
