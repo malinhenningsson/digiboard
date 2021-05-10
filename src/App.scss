@@ -2,9 +2,9 @@
 
 $light-green: #8ddad5;
 $darker-green: #20B2AA;
+$middle-green: #56A39E;
 $base-gradient: linear-gradient(-20deg, #00cdac 0%, #8ddad5 100%);
-$base-shadow-dark: 0px 0px 10px 3px rgba(100, 100, 100, 0.4);
-$base-shadow-light: 0px 0px 10px 3px rgba(100, 100, 100, 0.3);
+$base-shadow: 0px 0px 10px 3px rgba(100, 100, 100, 0.5);
 
 * {
   margin: 0;
@@ -24,9 +24,9 @@ body {
 
 #lobby-wrapper {
   background-image: $base-gradient;
-  color: white;
   width: 100vw;
   height: 100vh;
+  min-height: 500px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -47,16 +47,16 @@ body {
       background-image: $base-gradient;
       background-blend-mode: lighten;
       border-radius: 0.5em;
-      box-shadow: $base-shadow-dark;
-      -webkit-box-shadow: $base-shadow-dark;
-      -moz-box-shadow: $base-shadow-dark;
+      box-shadow: $base-shadow;
+      -webkit-box-shadow: $base-shadow;
+      -moz-box-shadow: $base-shadow;
       padding: 2rem 4rem;
     }
   }
   
   h1 {
     font-family: "Black Ops One", cursive, monospace;
-    font-size: 3.25rem;
+    font-size: 3rem;
     margin: 2rem 0 1.5rem;
   }
 
@@ -86,9 +86,9 @@ body {
       padding: 0.25em 0.5em;
       width: 85vw;
       background-color: transparent;
-      color: #fff;
+      color: #333;
       border: none;
-      border-bottom: 2px dashed #fff;
+      border-bottom: 2px dashed #333;
       font-size: 1.25em;
       
       @media screen and (min-width: 600px) {
@@ -97,13 +97,14 @@ body {
       }
     }
     ::placeholder {
-      color: #dfe9f3;
+      color: $darker-green;
     }
 
     button {
+      min-width: 245px;
       background-color: transparent;
-      color: #ffffff;
-      border: 2px solid #ffffff;
+      color: #333;
+      border: 2px solid #333;
       border-radius: 0.75em;
       padding: 0.25em 1.5em;
       margin: 3rem 0 2rem;
@@ -130,6 +131,7 @@ body {
   margin: 0 auto;
   overflow: hidden;
   background-image: linear-gradient(to bottom, #fdfbfb 0%, #ebedee 100%);
+  background-image: $base-gradient;
 }
 
 #toolpicker-wrapper {
@@ -143,7 +145,7 @@ body {
     font-size: 2em;
     margin: 20px 16px;
     :hover {
-      color: $light-green;
+      color: $middle-green;
     }
   }
 
@@ -168,10 +170,10 @@ body {
   margin: auto;
   cursor: crosshair;
   background-color: white;
-  border: 3px solid #333;
-  box-shadow: $base-shadow-light;
-  -webkit-box-shadow: $base-shadow-light;
-  -moz-box-shadow: $base-shadow-light;
+  border-radius: 1.25rem;
+  box-shadow: $base-shadow;
+  -webkit-box-shadow: $base-shadow;
+  -moz-box-shadow: $base-shadow;
 }
 
 #channel-users {
@@ -201,7 +203,7 @@ body {
   }
 
   #online-users-counter:hover {
-    color: $light-green;
+    color: $middle-green;
   }
 
   #online-users-dropwdown {
@@ -211,14 +213,14 @@ body {
     margin: 0.5em;
     padding: 0.25em 0.5em;
     max-height: 400px;
-    min-width: fit-content;
+    min-width: 100px;
     overflow-y: auto;
     border: 1px solid #e2e2e2;
     border-radius: 4px;
     background-color: #ffffff;
-    box-shadow: $base-shadow-light;
-    -webkit-box-shadow: $base-shadow-light;
-    -moz-box-shadow: $base-shadow-light;
+    box-shadow: $base-shadow;
+    -webkit-box-shadow: $base-shadow;
+    -moz-box-shadow: $base-shadow;
     cursor: default;
 
     ul {
@@ -255,7 +257,7 @@ body {
     font-size: 2em;
     margin: 20px 16px;
     :hover {
-      color: $light-green;
+      color: $middle-green;
     }
   }
 
@@ -267,9 +269,9 @@ body {
     width: 300px;
     border-radius: 0.5em 0.5em 0 0;
     background-color: #ffffff;
-    box-shadow: $base-shadow-dark;
-    -webkit-box-shadow: $base-shadow-dark;
-    -moz-box-shadow: $base-shadow-dark;
+    box-shadow: $base-shadow;
+    -webkit-box-shadow: $base-shadow;
+    -moz-box-shadow: $base-shadow;
   }
 
   #chat-msg-box-content {
@@ -348,9 +350,9 @@ body {
     z-index: 2;
     border-radius: 4px;
     background-image: $base-gradient;
-    box-shadow: $base-shadow-dark;
-    -webkit-box-shadow: $base-shadow-dark;
-    -moz-box-shadow: $base-shadow-dark;
+    box-shadow: $base-shadow;
+    -webkit-box-shadow: $base-shadow;
+    -moz-box-shadow: $base-shadow;
     padding: 2rem 3rem;
     cursor: default;
 
@@ -364,7 +366,7 @@ body {
       cursor: pointer;
     }
     .fa-icon:hover {
-      color: $light-green;
+      color: $middle-green;
     }
 
     h1 {
@@ -386,6 +388,9 @@ body {
         border-bottom: 2px dashed #333;
         background-color: inherit;
         font-size: 1.25em;
+      }
+      ::placeholder {
+        color: $darker-green;
       }
 
       #loader-and-button {
@@ -436,9 +441,9 @@ body {
   border-radius: 4px;
   background-image: $base-gradient;
   padding: 1rem 2rem;
-  box-shadow: $base-shadow-dark;
-  -webkit-box-shadow: $base-shadow-dark;
-  -moz-box-shadow: $base-shadow-dark;
+  box-shadow: $base-shadow;
+  -webkit-box-shadow: $base-shadow;
+  -moz-box-shadow: $base-shadow;
   p {
     font-weight: bold;
     margin-bottom: 0;
@@ -453,7 +458,7 @@ body {
   font-size: 2em;
   margin: 20px 16px;
   :hover {
-    color: $light-green;
+    color: $middle-green;
   }
 }
 
